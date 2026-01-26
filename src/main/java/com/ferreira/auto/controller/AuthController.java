@@ -25,7 +25,7 @@ public class AuthController {
     @Autowired
     private CustomerRepository customerRepository;
 
-    @PostMapping("/auth/login")
+    @PostMapping("/api/auto/auth/login")
     public String login(@RequestBody AuthDto authDto) {
 
         var usernamePassword =
