@@ -23,11 +23,30 @@ public class CustomerService {
         customer.setCustomerType(customerDto.getCustomerType());
         customer.setEmail(customerDto.getEmail());
         customer.setPassword(password);
+
+        if (customerDto.getId() == null) {
+            customer.setActive(true);
+        } else {
+            customer.setId(customerDto.getId());
+            customer.setActive(customerDto.isActive());
+        }
+
         return customerRepository.save(customer);
     }
 
     public Customer getById(Long id) {
         return customerRepository.getReferenceById(id);
+    }
+
+    public boolean delete(Long id) {
+        Customer customer = this.getById(id);
+
+        if (customer != null) {
+            customer.setActive(false);
+            customer = customerRepository.save(customer);
+        }
+
+        return customer.isActive();
     }
 
     public void saveToken(Customer customer, String token) {

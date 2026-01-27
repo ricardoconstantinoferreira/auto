@@ -34,6 +34,9 @@ public class Customer extends RepresentationModel<Customer> implements UserDetai
     @Column(nullable = true)
     private String token;
 
+    @Column(nullable = false)
+    private boolean active;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(() -> "read");
@@ -44,13 +47,14 @@ public class Customer extends RepresentationModel<Customer> implements UserDetai
 
     public Customer(Long id, String name, String document,
                     CustomerType customerType, String email,
-                    String password) {
+                    String password, boolean active) {
         this.id = id;
         this.name = name;
         this.document = document;
         this.customerType = customerType;
         this.email = email;
         this.password = password;
+        this.active = active;
     }
 
     public Long getId() {
@@ -132,5 +136,13 @@ public class Customer extends RepresentationModel<Customer> implements UserDetai
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

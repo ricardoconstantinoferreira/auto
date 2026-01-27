@@ -16,6 +16,8 @@ public class CustomerDto {
 
     private String password;
 
+    private boolean active;
+
     public CustomerDto() {}
 
     public Long getId() {
@@ -64,5 +66,13 @@ public class CustomerDto {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }
