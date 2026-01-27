@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class CustomerService {
 
@@ -38,6 +41,10 @@ public class CustomerService {
         return customerRepository.getReferenceById(id);
     }
 
+    public List<Customer> getAll() {
+        return customerRepository.findAll();
+    }
+
     public boolean delete(Long id) {
         Customer customer = this.getById(id);
 
@@ -55,7 +62,33 @@ public class CustomerService {
     }
 
     public Customer getCustomerByEmail(String email) {
+        Optional<Customer> customerOptional = customerRepository.findByEmail(email);
+
+        if (customerOptional.isEmpty()) {
+            return null;
+        }
+
         return customerRepository.findByEmail(email).get();
+    }
+
+    public boolean hasCustomerByEmail(CustomerDto customerDto) {
+        Optional<Customer> customerOptional = customerRepository.findByEmail(customerDto.getEmail());
+
+        if (!customerOptional.isEmpty()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean hasCustomerByDocument(CustomerDto customerDto) {
+        Optional<Customer> customerDocumentOptional = customerRepository.findByDocument(customerDto.getDocument());
+
+        if (!customerDocumentOptional.isEmpty()) {
+            return true;
+        }
+
+        return false;
     }
 
 }
