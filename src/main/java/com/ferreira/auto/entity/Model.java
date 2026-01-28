@@ -1,6 +1,7 @@
 package com.ferreira.auto.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serializable;
@@ -29,14 +30,19 @@ public class Model extends RepresentationModel<Model> implements Serializable {
     @Column(nullable = false)
     private String image;
 
+    @Column(nullable = false)
+    @ColumnDefault("true")
+    private boolean active;
+
     public Model() {}
 
-    public Model(Long id, String description, Carmaker carmaker, int year, String image) {
+    public Model(Long id, String description, Carmaker carmaker, int year, String image, boolean active) {
         this.id = id;
         this.description = description;
         this.carmaker = carmaker;
         this.year = year;
         this.image = image;
+        this.active = active;
     }
 
     public Long getId() {
@@ -77,5 +83,13 @@ public class Model extends RepresentationModel<Model> implements Serializable {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }
