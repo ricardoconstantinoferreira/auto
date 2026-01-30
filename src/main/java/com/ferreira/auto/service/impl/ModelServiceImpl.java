@@ -33,6 +33,7 @@ public class ModelServiceImpl implements ModelService {
         model.setDescription(modelDto.getDescription());
         model.setYear(modelDto.getYear());
         model.setImage(modelDto.getImage());
+        model.setActive(true);
 
         return modelRepository.save(model);
     }
