@@ -2,6 +2,7 @@ package com.ferreira.auto.controller;
 
 import com.ferreira.auto.dto.CustomerDto;
 import com.ferreira.auto.dto.CustomerResponseDto;
+import com.ferreira.auto.dto.ResetPasswordDto;
 import com.ferreira.auto.entity.Customer;
 import com.ferreira.auto.exception.CustomerAlreadyExistsException;
 import com.ferreira.auto.infra.configuration.MessageInternationalization;
@@ -47,7 +48,33 @@ public class CustomerController {
         CustomerResponseDto customerResponseDto = new CustomerResponseDto(
                 messageInternationalization.getMessage("customer.save.message"), "200", optionalCustomer
         );
+
+        customerService.sendMailCustomer(optionalCustomer.get(),
+                messageInternationalization.getMessage("subject.password.message"));
+
         return ResponseEntity.status(HttpStatus.CREATED).body(customerResponseDto);
+    }
+
+    @PutMapping("/reset-password/{id}")
+    public ResponseEntity<String> resetPassword(@PathVariable(value = "id") Long id,
+                                                             @RequestBody ResetPasswordDto resetPasswordDto
+    ) {
+        if (!resetPasswordDto.getPassword().equals(resetPasswordDto.getConfirmPassword())) {
+            return new ResponseEntity<>(
+                    messageInternationalization.getMessage("password.no.equal"),
+                    HttpStatus.NOT_FOUND);
+        }
+
+        String messageReset = messageInternationalization.getMessage("password.reset.invalid");
+        HttpStatus status = HttpStatus.NOT_FOUND;
+
+        if (customerService.resetPassword(resetPasswordDto, id)) {
+            messageReset = messageInternationalization.getMessage("password.reset.valid");
+            status = HttpStatus.OK;
+        }
+
+        return new ResponseEntity<>(messageReset, status);
+
     }
 
     @GetMapping("/{id}")

@@ -28,6 +28,7 @@ public class SecurityConfiguration {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/api/auto/customer").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/api/auto/customer/reset-password/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auto/auth/login").permitAll()
                         .anyRequest().authenticated()
                 )
