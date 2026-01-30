@@ -28,7 +28,7 @@ public class Customer extends RepresentationModel<Customer> implements UserDetai
     @Column(nullable = false)
     private String email;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String password;
 
     @Column(nullable = true)

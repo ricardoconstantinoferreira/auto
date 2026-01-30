@@ -1,6 +1,7 @@
 package com.ferreira.auto.service;
 
 import com.ferreira.auto.dto.CustomerDto;
+import com.ferreira.auto.dto.ResetPasswordDto;
 import com.ferreira.auto.entity.Customer;
 
 import java.util.List;
@@ -15,4 +16,6 @@ public interface CustomerService {
     Customer getCustomerByEmail(String email);
     boolean hasCustomerByEmail(CustomerDto customerDto);
     boolean hasCustomerByDocument(CustomerDto customerDto);
+    void sendMailCustomer(Customer customer, String subject);
+    boolean resetPassword(ResetPasswordDto resetPasswordDto, Long id);
 }

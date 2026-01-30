@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Definir Senha</title>
+</head>
+<body>
+
+    <section>
+        <h2>Olá <b th:text="${name}">name</b>!</h2>
+
+        <p>Por favor, clique no link abaixo para resetar sua senha!</p>
+        <p>
+            <a th:href="@{http://localhost:4200/reset-password(id=${id})}">Resetar Senha</a>
+        </p>
+
+        <div>
+            <img src="images/ferrieira-auto.png" data-th-src="|cid:ferrieiraLogo|" height="80" />
+        </div>
+
+    </section>
+
+</body>
+</html>

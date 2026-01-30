@@ -1,7 +1,9 @@
 package com.ferreira.auto.service.impl;
 
 import com.ferreira.auto.dto.CustomerDto;
+import com.ferreira.auto.dto.ResetPasswordDto;
 import com.ferreira.auto.entity.Customer;
+import com.ferreira.auto.publisher.customer.SendMailPublisher;
 import com.ferreira.auto.repository.CustomerRepository;
 import com.ferreira.auto.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,17 +19,17 @@ public class CustomerServiceImpl implements CustomerService {
     @Autowired
     private CustomerRepository customerRepository;
 
+    @Autowired
+    private SendMailPublisher sendMail;
+
     @Override
     public Customer save(CustomerDto customerDto) {
-
-        String password = new BCryptPasswordEncoder().encode(customerDto.getPassword());
 
         Customer customer = new Customer();
         customer.setName(customerDto.getName());
         customer.setDocument(customerDto.getDocument());
         customer.setCustomerType(customerDto.getCustomerType());
         customer.setEmail(customerDto.getEmail());
-        customer.setPassword(password);
 
         if (customerDto.getId() == null) {
             customer.setActive(true);
@@ -88,6 +90,24 @@ public class CustomerServiceImpl implements CustomerService {
     public boolean hasCustomerByDocument(CustomerDto customerDto) {
         Optional<Customer> customerDocumentOptional = customerRepository.findByDocument(customerDto.getDocument());
         return !customerDocumentOptional.isEmpty();
+    }
+
+    @Override
+    public void sendMailCustomer(Customer customer, String subject) {
+        String templateName = "reset";
+        String logo = "templates/images/ferrieira-auto.png";
+
+        sendMail.doSendMail(customer, templateName, logo, subject);
+    }
+
+    @Override
+    public boolean resetPassword(ResetPasswordDto resetPasswordDto, Long id) {
+        String password = new BCryptPasswordEncoder().encode(resetPasswordDto.getPassword());
+        Customer customer = this.getById(id);
+
+        customer.setPassword(password);
+        Customer entity = customerRepository.save(customer);
+        return entity != null;
     }
 
 }
