@@ -26,7 +26,7 @@ public class AuthController {
     private CustomerRepository customerRepository;
 
     @PostMapping("/api/auto/auth/login")
-    public String login(@RequestBody AuthDto authDto) {
+    public Customer login(@RequestBody AuthDto authDto) {
 
         var usernamePassword =
                 new UsernamePasswordAuthenticationToken(authDto.email(), authDto.password());
@@ -35,7 +35,9 @@ public class AuthController {
 
         Optional<Customer> customerOptional =  customerRepository.findByEmail(authDto.email());
         Customer customer = customerOptional.get();
+        String token = tokenService.generateToken(customer);
+        customer.setToken(token);
 
-        return tokenService.generateToken(customer);
+        return customer;
     }
 }
