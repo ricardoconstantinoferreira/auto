@@ -57,7 +57,7 @@ public class CarmakerController {
 
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public void delete(@PathVariable(value = "id") Long id) {
         carmakerService.delete(id);
     }
