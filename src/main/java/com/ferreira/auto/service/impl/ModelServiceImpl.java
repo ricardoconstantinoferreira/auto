@@ -34,6 +34,7 @@ public class ModelServiceImpl implements ModelService {
         model.setDescription(modelRecord.description());
         model.setYear(modelRecord.year());
         model.setImage(Config.UPLOADS + "/" + modelRecord.image().getOriginalFilename());
+        model.setPrice(modelRecord.price());
         model.setActive(true);
 
         return modelRepository.save(model);
