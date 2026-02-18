@@ -34,11 +34,14 @@ public class ModelController {
 
     @PostMapping(consumes = "multipart/form-data")
     public ResponseEntity<ModelResponseDto> save(@ModelAttribute ModelRecord modelRecord) throws IOException {
-        if (modelService.hasModel(modelRecord.description())) {
-            throw new ModelAlreadyExistsException(
-                    messageInternationalization.getMessage("model.exists.message"),
-                    modelRecord.description()
-            );
+
+        if (modelRecord.id() == null) {
+            if (modelService.hasModel(modelRecord.description())) {
+                throw new ModelAlreadyExistsException(
+                        messageInternationalization.getMessage("model.exists.message"),
+                        modelRecord.description()
+                );
+            }
         }
 
         if (!Files.exists(root)) Files.createDirectory(root);
