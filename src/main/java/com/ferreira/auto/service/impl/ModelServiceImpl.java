@@ -1,8 +1,9 @@
 package com.ferreira.auto.service.impl;
 
-import com.ferreira.auto.dto.ModelDto;
+import com.ferreira.auto.dto.ModelRecord;
 import com.ferreira.auto.entity.Carmaker;
 import com.ferreira.auto.entity.Model;
+import com.ferreira.auto.infra.upload.Config;
 import com.ferreira.auto.repository.ModelRepository;
 import com.ferreira.auto.service.CarmakerService;
 import com.ferreira.auto.service.ModelService;
@@ -22,17 +23,17 @@ public class ModelServiceImpl implements ModelService {
     private CarmakerService carmakerService;
 
     @Override
-    public Model save(ModelDto modelDto) {
+    public Model save(ModelRecord modelRecord) {
         Model model = new Model();
 
-        if (modelDto.getId() != null) {
-            model.setId(modelDto.getId());
+        if (modelRecord.id() != null) {
+            model.setId(modelRecord.id());
         }
-        Carmaker carmaker = carmakerService.getById(modelDto.getCarmakerId());
+        Carmaker carmaker = carmakerService.getById(modelRecord.carmakerId());
         model.setCarmaker(carmaker);
-        model.setDescription(modelDto.getDescription());
-        model.setYear(modelDto.getYear());
-        model.setImage(modelDto.getImage());
+        model.setDescription(modelRecord.description());
+        model.setYear(modelRecord.year());
+        model.setImage(Config.UPLOADS + "/" + modelRecord.image().getOriginalFilename());
         model.setActive(true);
 
         return modelRepository.save(model);
