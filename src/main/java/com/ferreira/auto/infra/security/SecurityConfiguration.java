@@ -30,6 +30,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.POST, "/api/auto/customer").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/api/auto/customer/reset-password/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auto/auth/login").permitAll()
+                        .requestMatchers("/uploads/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

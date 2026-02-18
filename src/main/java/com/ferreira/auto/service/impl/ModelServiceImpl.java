@@ -47,7 +47,7 @@ public class ModelServiceImpl implements ModelService {
 
     @Override
     public List<Model> getAll() {
-        return modelRepository.findAll();
+        return modelRepository.getAllModels();
     }
 
     @Override
