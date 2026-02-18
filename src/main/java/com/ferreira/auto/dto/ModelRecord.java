@@ -8,5 +8,6 @@ public record ModelRecord(
         Long carmakerId,
         int year,
         boolean active,
-        MultipartFile image
+        MultipartFile image,
+        float price
 ) { }

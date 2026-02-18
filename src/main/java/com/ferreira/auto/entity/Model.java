@@ -34,15 +34,19 @@ public class Model extends RepresentationModel<Model> implements Serializable {
     @ColumnDefault("true")
     private boolean active;
 
+    @Column(nullable = false)
+    private float price;
+
     public Model() {}
 
-    public Model(Long id, String description, Carmaker carmaker, int year, String image, boolean active) {
+    public Model(Long id, String description, Carmaker carmaker, int year, String image, boolean active, float price) {
         this.id = id;
         this.description = description;
         this.carmaker = carmaker;
         this.year = year;
         this.image = image;
         this.active = active;
+        this.price = price;
     }
 
     public Long getId() {
@@ -91,5 +95,13 @@ public class Model extends RepresentationModel<Model> implements Serializable {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
     }
 }
