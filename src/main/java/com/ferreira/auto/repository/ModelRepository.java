@@ -12,6 +12,8 @@ import java.util.Optional;
 public interface ModelRepository extends JpaRepository<Model, Long> {
     Optional<Model> findByDescription(String description);
 
+    Optional<Model> findById(Long id);
+
     @Query(nativeQuery = true, value =
     "select \n" +
         "m.id, \n" +

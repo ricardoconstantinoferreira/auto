@@ -42,7 +42,8 @@ public class ModelServiceImpl implements ModelService {
 
     @Override
     public Model getById(Long id) {
-        return modelRepository.getReferenceById(id);
+        Optional<Model> models = modelRepository.findById(id);
+        return models.get();
     }
 
     @Override
