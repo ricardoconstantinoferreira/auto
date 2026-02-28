@@ -1,7 +1,6 @@
 package com.ferreira.auto.entity.customer;
 
 import com.ferreira.auto.entity.Customer;
-import com.ferreira.auto.service.CustomerService;
 import org.springframework.context.ApplicationEvent;
 
 public class MailEvents extends ApplicationEvent {
