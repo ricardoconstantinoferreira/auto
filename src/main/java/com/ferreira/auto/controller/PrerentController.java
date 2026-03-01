@@ -2,7 +2,6 @@ package com.ferreira.auto.controller;
 
 import com.ferreira.auto.dto.PrerentDto;
 import com.ferreira.auto.dto.PrerentResponseDto;
-import com.ferreira.auto.entity.Model;
 import com.ferreira.auto.entity.Prerent;
 import com.ferreira.auto.exception.PrerentAlreadyExistsException;
 import com.ferreira.auto.infra.configuration.MessageInternationalization;
@@ -12,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "api/auto/prerent")
@@ -40,7 +41,7 @@ public class PrerentController {
     }
 
     @GetMapping("/{customerId}")
-    public ResponseEntity<Prerent> findByCustomerId(@PathVariable(value = "customerId") Long customerId) {
+    public ResponseEntity<List<Prerent>> findByCustomerId(@PathVariable(value = "customerId") Long customerId) {
         return new ResponseEntity<>(prerentService.findByCustomerId(customerId), HttpStatus.OK);
     }
 
