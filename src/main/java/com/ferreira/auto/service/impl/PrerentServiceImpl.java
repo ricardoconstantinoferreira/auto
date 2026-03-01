@@ -11,9 +11,11 @@ import com.ferreira.auto.repository.PrerentRepository;
 import com.ferreira.auto.service.CustomerService;
 import com.ferreira.auto.service.ModelService;
 import com.ferreira.auto.service.PrerentService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -54,12 +56,12 @@ public class PrerentServiceImpl implements PrerentService {
     }
 
     @Override
-    public Prerent findByCustomerId(Long customerId) {
-        Optional<Prerent> prerent = prerentRepository.findByCustomerId(customerId);
-        return prerent.get();
+    public List<Prerent> findByCustomerId(Long customerId) {
+        return prerentRepository.findByCustomerId(customerId);
     }
 
     @Override
+    @Transactional
     public void deleteByModelId(Long modelId) {
         prerentRepository.deleteByModelId(modelId);
     }
