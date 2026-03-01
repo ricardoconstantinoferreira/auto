@@ -4,9 +4,9 @@ public class PrerentDto {
 
     private Long id;
 
-    private Long customer_id;
+    private Long customerId;
 
-    private Long model_id;
+    private Long modelId;
 
     public PrerentDto() {}
 
@@ -18,19 +18,19 @@ public class PrerentDto {
         this.id = id;
     }
 
-    public Long getCustomer_id() {
-        return customer_id;
+    public Long getCustomerId() {
+        return customerId;
     }
 
-    public void setCustomer_id(Long customer_id) {
-        this.customer_id = customer_id;
+    public void setCustomerId(Long customerId) {
+        this.customerId = customerId;
     }
 
-    public Long getModel_id() {
-        return model_id;
+    public Long getModelId() {
+        return modelId;
     }
 
-    public void setModel_id(Long model_id) {
-        this.model_id = model_id;
+    public void setModelId(Long modelId) {
+        this.modelId = modelId;
     }
 }

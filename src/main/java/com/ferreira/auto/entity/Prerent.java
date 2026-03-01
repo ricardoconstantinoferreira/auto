@@ -27,12 +27,16 @@ public class Prerent extends RepresentationModel<Prerent> implements Serializabl
     )
     private Model model;
 
+    @Column(nullable = false)
+    private StatusPrerent status;
+
     public Prerent() {}
 
-    public Prerent(Long id, Customer customer, Model model) {
+    public Prerent(Long id, Customer customer, Model model, StatusPrerent status) {
         this.id = id;
         this.customer = customer;
         this.model = model;
+        this.status = status;
     }
 
     public Long getId() {
@@ -57,5 +61,13 @@ public class Prerent extends RepresentationModel<Prerent> implements Serializabl
 
     public void setModel(Model model) {
         this.model = model;
+    }
+
+    public StatusPrerent getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusPrerent status) {
+        this.status = status;
     }
 }
