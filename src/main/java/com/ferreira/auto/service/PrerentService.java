@@ -13,4 +13,5 @@ public interface PrerentService {
     void deleteByModelId(Long modelId);
     boolean validateDataPrerent(PrerentDto prerentDto);
     Long getQtyPrerent(Long customerId);
+    void changedStatus(Long customerId);
 }
