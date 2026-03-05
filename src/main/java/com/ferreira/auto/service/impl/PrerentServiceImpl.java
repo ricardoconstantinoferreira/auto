@@ -78,4 +78,16 @@ public class PrerentServiceImpl implements PrerentService {
     public Long getQtyPrerent(Long customerId) {
         return prerentRepository.findQtyPrerentByCustomer(customerId);
     }
+
+    @Override
+    public void changedStatus(Long customerId) {
+        List<Prerent> prerents = prerentRepository.findByCustomerId(customerId);
+
+        if (!prerents.isEmpty()) {
+            for (Prerent prerent: prerents) {
+                prerent.setStatus(StatusPrerent.IS_CLOSED);
+                prerentRepository.save(prerent);
+            }
+        }
+    }
 }
