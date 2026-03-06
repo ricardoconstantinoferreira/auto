@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -94,10 +93,5 @@ public class OrderServiceImpl implements OrderService {
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
-    }
-
-    @Override
-    public List<Order> getByCustomerId(Long customerId) {
-        return List.of();
     }
 }
