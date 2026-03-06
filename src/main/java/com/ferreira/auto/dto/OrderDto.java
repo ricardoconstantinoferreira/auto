@@ -1,10 +1,15 @@
 package com.ferreira.auto.dto;
 
-public class OrderDto {
+import java.io.Serializable;
+import java.util.List;
+
+public class OrderDto implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private Long customerId;
 
-    private Long modelId;
+    private List<ItemsDto> itemsDto;
 
     public OrderDto() {}
 
@@ -16,11 +21,11 @@ public class OrderDto {
         this.customerId = customerId;
     }
 
-    public Long getModelId() {
-        return modelId;
+    public List<ItemsDto> getItemsDto() {
+        return itemsDto;
     }
 
-    public void setModelId(Long modelId) {
-        this.modelId = modelId;
+    public void setItemsDto(List<ItemsDto> itemsDto) {
+        this.itemsDto = itemsDto;
     }
 }
