@@ -18,4 +18,9 @@ public class OrderItemsServiceImpl implements OrderItemsService {
     public List<OrderItems> getByCustomerId(Long customerId) {
         return orderItemsRepository.findByOrderByCustomerId(customerId);
     }
+
+    @Override
+    public List<OrderItems> getByOrderId(Long orderId) {
+        return orderItemsRepository.findByOrderByOrderId(orderId);
+    }
 }
