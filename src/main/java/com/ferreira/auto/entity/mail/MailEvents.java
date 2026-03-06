@@ -1,4 +1,4 @@
-package com.ferreira.auto.entity.customer;
+package com.ferreira.auto.entity.mail;
 
 import com.ferreira.auto.entity.Customer;
 import org.springframework.context.ApplicationEvent;
@@ -9,13 +9,11 @@ public class MailEvents extends ApplicationEvent {
     private String subject;
     private String templateName;
     private String logo;
+    private Long orderId;
+    private String type;
 
-    public MailEvents(Object source, Customer customer, String templateName, String subject, String logo) {
+    public MailEvents(Object source) {
         super(source);
-        this.customer = customer;
-        this.templateName = templateName;
-        this.subject = subject;
-        this.logo = logo;
     }
 
     public Customer getCustomer() {
@@ -48,5 +46,21 @@ public class MailEvents extends ApplicationEvent {
 
     public void setLogo(String logo) {
         this.logo = logo;
+    }
+
+    public Long getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

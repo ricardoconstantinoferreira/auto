@@ -1,6 +1,6 @@
 package com.ferreira.auto.listener.customer;
 
-import com.ferreira.auto.entity.customer.MailEvents;
+import com.ferreira.auto.entity.mail.MailEvents;
 import com.ferreira.auto.service.EmailService;
 import com.ferreira.auto.strategy.MailStrategy;
 import jakarta.mail.MessagingException;
@@ -9,6 +9,10 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Component
 public class SendMailListener implements ApplicationListener<MailEvents> {
@@ -17,11 +21,17 @@ public class SendMailListener implements ApplicationListener<MailEvents> {
     private EmailService emailService;
 
     @Autowired
-    private MailStrategy mailStrategy;
+    private Map<String, MailStrategy> mailStrategys;
+
+    public SendMailListener(List<MailStrategy> strategyList) {
+        this.mailStrategys = strategyList.stream()
+                .collect(Collectors.toMap(MailStrategy::getType, Function.identity()));
+    }
 
     @Override
     public void onApplicationEvent(MailEvents event) {
         try {
+            MailStrategy mailStrategy = mailStrategys.get(event.getType());
             emailService.sendEmail(event, mailStrategy);
         } catch (MessagingException e) {
             throw new RuntimeException(e);
