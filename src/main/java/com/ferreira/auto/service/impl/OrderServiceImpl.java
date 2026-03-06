@@ -1,15 +1,17 @@
 package com.ferreira.auto.service.impl;
 
+import com.ferreira.auto.dto.ItemsDto;
 import com.ferreira.auto.dto.OrderDto;
-import com.ferreira.auto.dto.OrderResponseDto;
 import com.ferreira.auto.entity.*;
-import com.ferreira.auto.infra.configuration.MessageInternationalization;
+import com.ferreira.auto.infra.configuration.RabbitMQConfig;
 import com.ferreira.auto.repository.OrderItemsRepository;
 import com.ferreira.auto.repository.OrderRepository;
 import com.ferreira.auto.service.CustomerService;
 import com.ferreira.auto.service.ModelService;
 import com.ferreira.auto.service.OrderService;
 import com.ferreira.auto.service.PrerentService;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,9 +29,6 @@ public class OrderServiceImpl implements OrderService {
     private OrderItemsRepository orderItemsRepository;
 
     @Autowired
-    private MessageInternationalization messageInternationalization;
-
-    @Autowired
     private CustomerService customerService;
 
     @Autowired
@@ -38,14 +37,23 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private PrerentService prerentService;
 
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+
     @Override
-    public OrderResponseDto save(List<OrderDto> orderDto) {
-        OrderResponseDto response = null;
+    public void sendRabbit(OrderDto orderDto) {
+        rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_ORDER,
+                RabbitMQConfig.ROUTING_KEY, orderDto);
+    }
+
+    @Override
+    @RabbitListener(queues = RabbitMQConfig.QUEUE_ORDER)
+    public void save(OrderDto orderDto) {
         float totalPrice = 0;
 
         try {
             Order order = new Order();
-            Customer customer = customerService.getById(orderDto.getFirst().getCustomerId());
+            Customer customer = customerService.getById(orderDto.getCustomerId());
 
             order.setCustomer(customer);
             order.setDateOrder(LocalDateTime.now());
@@ -54,7 +62,7 @@ public class OrderServiceImpl implements OrderService {
             Order responseOrder = orderRepository.save(order);
 
             if (responseOrder.getId() != null) {
-                for (OrderDto dto: orderDto) {
+                for (ItemsDto dto: orderDto.getItemsDto()) {
 
                     Model model = modelService.getById(dto.getModelId());
                     OrderItems orderItems = new OrderItems();
@@ -69,15 +77,8 @@ public class OrderServiceImpl implements OrderService {
 
                 updatePriceTotalOrder(responseOrder.getId(), totalPrice);
                 prerentService.changedStatus(customer.getId());
-
-                Optional<Order> orderOptional = Optional.ofNullable(responseOrder);
-                response = new OrderResponseDto(
-                        messageInternationalization.getMessage("order.add.done"),
-                        "200",
-                        orderOptional);
             }
 
-            return response;
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
@@ -85,7 +86,8 @@ public class OrderServiceImpl implements OrderService {
 
     private void updatePriceTotalOrder(Long id, float price) {
         try {
-            Order order = orderRepository.getReferenceById(id);
+            Optional<Order> orderOptional = orderRepository.findById(id);
+            Order order = orderOptional.get();
             order.setTotalPrice(price);
 
             orderRepository.save(order);
