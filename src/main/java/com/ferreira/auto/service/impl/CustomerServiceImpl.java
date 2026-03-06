@@ -3,6 +3,7 @@ package com.ferreira.auto.service.impl;
 import com.ferreira.auto.dto.CustomerDto;
 import com.ferreira.auto.dto.ResetPasswordDto;
 import com.ferreira.auto.entity.Customer;
+import com.ferreira.auto.entity.mail.MailEvents;
 import com.ferreira.auto.publisher.customer.SendMailPublisher;
 import com.ferreira.auto.repository.CustomerRepository;
 import com.ferreira.auto.service.CustomerService;
@@ -98,7 +99,14 @@ public class CustomerServiceImpl implements CustomerService {
         String templateName = "reset";
         String logo = "templates/images/ferrieira-auto.png";
 
-        sendMail.doSendMail(customer, templateName, logo, subject);
+        MailEvents mailEvents = new MailEvents(this);
+        mailEvents.setCustomer(customer);
+        mailEvents.setSubject(subject);
+        mailEvents.setTemplateName(templateName);
+        mailEvents.setLogo(logo);
+        mailEvents.setType("mailStrategyCustomer");
+
+        sendMail.doSendMail(mailEvents);
     }
 
     @Override

@@ -3,7 +3,9 @@ package com.ferreira.auto.service.impl;
 import com.ferreira.auto.dto.ItemsDto;
 import com.ferreira.auto.dto.OrderDto;
 import com.ferreira.auto.entity.*;
+import com.ferreira.auto.entity.mail.MailEvents;
 import com.ferreira.auto.infra.configuration.RabbitMQConfig;
+import com.ferreira.auto.publisher.customer.SendMailPublisher;
 import com.ferreira.auto.repository.OrderItemsRepository;
 import com.ferreira.auto.repository.OrderRepository;
 import com.ferreira.auto.service.CustomerService;
@@ -39,15 +41,30 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
+    @Autowired
+    private SendMailPublisher sendMail;
+
     @Override
-    public void sendRabbit(OrderDto orderDto) {
-        rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_ORDER,
-                RabbitMQConfig.ROUTING_KEY, orderDto);
+    public Order sendRabbit(OrderDto orderDto) {
+        Object response = rabbitTemplate.convertSendAndReceive(
+                RabbitMQConfig.EXCHANGE_ORDER,
+                RabbitMQConfig.ROUTING_KEY,
+                orderDto);
+
+        if (response instanceof Order order) {
+            return order;
+        }
+
+        throw new RuntimeException("Order response from queue is invalid or null");
+    }
+
+    @RabbitListener(queues = RabbitMQConfig.QUEUE_ORDER)
+    public Order consumeRabbit(OrderDto orderDto) {
+        return save(orderDto);
     }
 
     @Override
-    @RabbitListener(queues = RabbitMQConfig.QUEUE_ORDER)
-    public void save(OrderDto orderDto) {
+    public Order save(OrderDto orderDto) {
         float totalPrice = 0;
 
         try {
@@ -78,9 +95,26 @@ public class OrderServiceImpl implements OrderService {
                 prerentService.changedStatus(customer.getId());
             }
 
+            return responseOrder;
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
+    }
+
+    @Override
+    public void sendMailOrder(Customer customer, String subject, Order order) {
+        String templateName = "order";
+        String logo = "templates/images/ferrieira-auto.png";
+
+        MailEvents mailEvents = new MailEvents(this);
+        mailEvents.setCustomer(customer);
+        mailEvents.setSubject(subject);
+        mailEvents.setTemplateName(templateName);
+        mailEvents.setLogo(logo);
+        mailEvents.setOrderId(order.getId());
+        mailEvents.setType("mailStrategyOrder");
+
+        sendMail.doSendMail(mailEvents);
     }
 
     private void updatePriceTotalOrder(Long id, float price) {

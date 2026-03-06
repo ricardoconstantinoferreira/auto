@@ -1,6 +1,6 @@
 package com.ferreira.auto.service.impl;
 
-import com.ferreira.auto.entity.customer.MailEvents;
+import com.ferreira.auto.entity.mail.MailEvents;
 import com.ferreira.auto.service.EmailService;
 import com.ferreira.auto.strategy.MailStrategy;
 import jakarta.mail.MessagingException;

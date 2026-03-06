@@ -1,4 +1,4 @@
-package com.ferreira.auto.strategy.customer;
+package com.ferreira.auto.strategy.order;
 
 import com.ferreira.auto.entity.mail.MailEvents;
 import com.ferreira.auto.strategy.MailStrategy;
@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component;
 import org.thymeleaf.context.Context;
 
 @Component
-public class MailStrategyCustomer implements MailStrategy {
+public class MailStrategyOrder implements MailStrategy {
 
-    private final String TYPE = "CUSTOMER";
+    private final String TYPE = "ORDER";
     private final String LOGO_NAME = "ferrieiraLogo";
 
     @Override
@@ -19,6 +19,7 @@ public class MailStrategyCustomer implements MailStrategy {
         ctx.setVariable("name", mailEvents.getCustomer().getName());
         ctx.setVariable("id", mailEvents.getCustomer().getId());
         ctx.setVariable("ferrieiraLogo", mailEvents.getLogo());
+        ctx.setVariable("order_id", mailEvents.getOrderId());
 
         return ctx;
     }
