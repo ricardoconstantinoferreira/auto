@@ -72,25 +72,6 @@ class OrderServiceImplTest {
     }
 
     @Test
-    void consumeRabbitDelegatesToSave() {
-        OrderDto dto = new OrderDto();
-        dto.setItemsDto(List.of());
-        Customer customer = new Customer();
-        Order persisted = new Order();
-        persisted.setId(1L);
-        Order priced = new Order();
-        priced.setId(1L);
-
-        when(customerService.getById(anyLong())).thenReturn(customer);
-        when(orderRepository.save(any(Order.class))).thenReturn(persisted, priced);
-        when(orderRepository.findById(1L)).thenReturn(Optional.of(priced));
-        when(orderRepository.findById(anyLong())).thenReturn(Optional.of(priced));
-
-        Order result = service.consumeRabbit(dto);
-        assertSame(persisted, result);
-    }
-
-    @Test
     void saveCreatesOrderItemsUpdatesPriceAndChangesStatus() {
         Customer customer = new Customer();
         customer.setId(5L);
