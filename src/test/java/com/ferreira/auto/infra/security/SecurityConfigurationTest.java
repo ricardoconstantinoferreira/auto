@@ -36,7 +36,7 @@ class SecurityConfigurationTest {
         when(httpSecurity.addFilterBefore(any(), any())).thenReturn(httpSecurity);
         when(httpSecurity.build()).thenReturn(securityFilterChain);
 
-        SecurityFilterChain result = securityConfiguration.securityFilterChain(httpSecurity);
+        SecurityFilterChain result = securityConfiguration.securityFilterChain(httpSecurity, securityFilter);
 
         assertSame(securityFilterChain, result);
     }

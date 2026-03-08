@@ -13,6 +13,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +30,9 @@ class CustomerServiceImplTest {
 
     @Mock
     private SendMailPublisher sendMail;
+
+    @Mock
+    private PasswordEncoder passwordEncoder;
 
     @InjectMocks
     private CustomerServiceImpl service;
@@ -140,6 +144,7 @@ class CustomerServiceImplTest {
 
         ResetPasswordDto dto = new ResetPasswordDto();
         dto.setPassword("123");
+        when(passwordEncoder.encode("123")).thenReturn("encoded-123");
 
         assertTrue(service.resetPassword(dto, 7L));
         assertNotEquals("123", customer.getPassword());

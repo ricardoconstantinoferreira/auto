@@ -2,13 +2,15 @@ package com.ferreira.auto.service.impl;
 
 import com.ferreira.auto.dto.CustomerDto;
 import com.ferreira.auto.dto.ResetPasswordDto;
+import com.ferreira.auto.dto.UpdatedPasswordDto;
 import com.ferreira.auto.entity.Customer;
 import com.ferreira.auto.entity.mail.MailEvents;
+import com.ferreira.auto.infra.configuration.MessageInternationalization;
 import com.ferreira.auto.publisher.customer.SendMailPublisher;
 import com.ferreira.auto.repository.CustomerRepository;
 import com.ferreira.auto.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +24,12 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Autowired
     private SendMailPublisher sendMail;
+
+    @Autowired
+    private MessageInternationalization messageInternationalization;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public Customer save(CustomerDto customerDto) {
@@ -111,12 +119,29 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public boolean resetPassword(ResetPasswordDto resetPasswordDto, Long id) {
-        String password = new BCryptPasswordEncoder().encode(resetPasswordDto.getPassword());
+        String password = passwordEncoder.encode(resetPasswordDto.getPassword());
         Customer customer = this.getById(id);
 
         customer.setPassword(password);
         Customer entity = customerRepository.save(customer);
         return entity != null;
+    }
+
+    @Override
+    public void updatedPassword(Long customerId, UpdatedPasswordDto updatedPasswordDto) {
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new RuntimeException(messageInternationalization.getMessage("customer.not.find")));
+
+        if (!updatedPasswordDto.getNewPassword().equals(updatedPasswordDto.getConfirmPassword())) {
+            throw new RuntimeException(messageInternationalization.getMessage("customer.password.not.equals"));
+        }
+
+        if (!passwordEncoder.matches(updatedPasswordDto.getCurrentPassword(), customer.getPassword())) {
+            throw new RuntimeException(messageInternationalization.getMessage("customer.password.not.correct"));
+        }
+
+        customer.setPassword(passwordEncoder.encode(updatedPasswordDto.getNewPassword()));
+        customerRepository.save(customer);
     }
 
 }
