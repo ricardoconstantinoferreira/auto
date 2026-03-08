@@ -3,6 +3,7 @@ package com.ferreira.auto.controller;
 import com.ferreira.auto.dto.CustomerDto;
 import com.ferreira.auto.dto.CustomerResponseDto;
 import com.ferreira.auto.dto.ResetPasswordDto;
+import com.ferreira.auto.dto.UpdatedPasswordDto;
 import com.ferreira.auto.entity.Customer;
 import com.ferreira.auto.exception.CustomerAlreadyExistsException;
 import com.ferreira.auto.infra.configuration.MessageInternationalization;
@@ -102,5 +103,19 @@ public class CustomerController {
         return new ResponseEntity<>(
                 messageInternationalization.getMessage("customer.no.deleted.message"),
                 HttpStatus.NOT_FOUND);
+    }
+
+    @PutMapping("/{customerId}/updated-password")
+    public ResponseEntity<String> updatedPassword(@PathVariable(value = "customerId") Long customerId,
+                                                  @RequestBody UpdatedPasswordDto updatedPasswordDto) {
+        try {
+            customerService.updatedPassword(customerId, updatedPasswordDto);
+            return new ResponseEntity<>(
+                    messageInternationalization.getMessage("customer.password.updated.successfully"),
+                    HttpStatus.OK
+            );
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }
