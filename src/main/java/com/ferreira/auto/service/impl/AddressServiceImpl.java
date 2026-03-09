@@ -44,6 +44,25 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
+    public Address updateByCustomerId(Long customerId, AddressDto addressDto) {
+        Address address = addressRepository.getAddressByIdAndCustomerId(customerId);
+
+        address.setAddress(addressDto.getAddress());
+        address.setCity(addressDto.getCity());
+        address.setComplement(addressDto.getComplement());
+        address.setNeighborhood(addressDto.getNeighborhood());
+        address.setComplement(addressDto.getComplement());
+        address.setNumber(addressDto.getNumber());
+        address.setState(addressDto.getState());
+        address.setZipcode(addressDto.getZipcode());
+
+        Customer customer = customerService.getById(addressDto.getCustomerId());
+        address.setCustomer(customer);
+
+        return addressRepository.save(address);
+    }
+
+    @Override
     public boolean hasAddressByCustomer(AddressDto addressDto) {
         Address address = addressRepository.getAddressByIdAndCustomerId(addressDto.getCustomerId());
         if (address != null) {
@@ -70,5 +89,10 @@ public class AddressServiceImpl implements AddressService {
     public void delete(Long id) {
         Address address = this.getById(id);
         addressRepository.delete(address);
+    }
+
+    @Override
+    public Address getAddressByCustomerId(Long customerId) {
+        return addressRepository.getAddressByIdAndCustomerId(customerId);
     }
 }

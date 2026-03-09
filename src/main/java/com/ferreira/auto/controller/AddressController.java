@@ -55,6 +55,18 @@ public class AddressController {
         return ResponseEntity.status(HttpStatus.CREATED).body(addressResponseDto);
     }
 
+    @PutMapping("/customer/{customerId}")
+    public ResponseEntity<AddressResponseDto> updateByCustomerId(@PathVariable(value = "customerId") Long customerId,
+                                                                 @RequestBody AddressDto addressDto) {
+
+        Address entity = addressService.updateByCustomerId(customerId, addressDto);
+        Optional<Address> optionalAddress = Optional.ofNullable(entity);
+        AddressResponseDto addressResponseDto = new AddressResponseDto(
+                messageInternationalization.getMessage("address.updated.message"), "200", optionalAddress
+        );
+        return ResponseEntity.status(HttpStatus.CREATED).body(addressResponseDto);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Address> getById(@PathVariable(value = "id") Long id) {
         return new ResponseEntity<>(addressService.getById(id), HttpStatus.OK);
@@ -68,6 +80,11 @@ public class AddressController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable(value = "id") Long id) {
         addressService.delete(id);
+    }
+
+    @GetMapping("/customer/{customerId}")
+    public ResponseEntity<Address> getAddressByCustomerId(@PathVariable(value = "customerId") Long customerId) {
+        return new ResponseEntity<>(addressService.getAddressByCustomerId(customerId), HttpStatus.OK);
     }
 
 }
