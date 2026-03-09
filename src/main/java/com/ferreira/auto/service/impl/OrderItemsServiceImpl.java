@@ -1,6 +1,6 @@
 package com.ferreira.auto.service.impl;
 
-import com.ferreira.auto.entity.OrderItems;
+import com.ferreira.auto.entity.lib.OrderItemsInterface;
 import com.ferreira.auto.repository.OrderItemsRepository;
 import com.ferreira.auto.service.OrderItemsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +15,7 @@ public class OrderItemsServiceImpl implements OrderItemsService {
     private OrderItemsRepository orderItemsRepository;
 
     @Override
-    public List<OrderItems> getByCustomerId(Long customerId) {
-        return orderItemsRepository.findByOrderByCustomerId(customerId);
-    }
-
-    @Override
-    public List<OrderItems> getByOrderId(Long orderId) {
-        return orderItemsRepository.findByOrderByOrderId(orderId);
+    public List<OrderItemsInterface> getByOrderItemsByOrderIdAndCustomerId(Long orderId, Long customerId) {
+        return orderItemsRepository.findByOrderItemsByOrderIdAndCustomerId(orderId, customerId);
     }
 }

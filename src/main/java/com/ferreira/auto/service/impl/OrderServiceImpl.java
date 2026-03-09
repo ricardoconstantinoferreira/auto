@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -102,6 +103,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<Order> getOrderByCustomerId(Long customerId) {
+        return orderRepository.findByCustomerId(customerId);
+    }
+
+    @Override
     public void sendMailOrder(Customer customer, String subject, Order order) {
         String templateName = "order";
         String logo = "templates/images/ferrieira-auto.png";
@@ -128,4 +134,6 @@ public class OrderServiceImpl implements OrderService {
             throw new RuntimeException(e.getMessage());
         }
     }
+
+
 }

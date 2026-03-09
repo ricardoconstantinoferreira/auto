@@ -1,6 +1,6 @@
 package com.ferreira.auto.controller;
 
-import com.ferreira.auto.entity.OrderItems;
+import com.ferreira.auto.entity.lib.OrderItemsInterface;
 import com.ferreira.auto.service.OrderItemsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,13 +19,9 @@ public class OrderItemsController {
     @Autowired
     private OrderItemsService orderItemsService;
 
-    @GetMapping("/{customerId}")
-    public ResponseEntity<List<OrderItems>> getByCustomerId(@PathVariable(value = "customerId") Long customerId) {
-        return new ResponseEntity<>(orderItemsService.getByCustomerId(customerId), HttpStatus.OK);
-    }
-
-    @GetMapping("/order/{orderId}")
-    public ResponseEntity<List<OrderItems>> getByOrderId(@PathVariable(value = "orderId") Long orderId) {
-        return new ResponseEntity<>(orderItemsService.getByOrderId(orderId), HttpStatus.OK);
+    @GetMapping("/order/customer/{orderId}/{customerId}")
+    public ResponseEntity<List<OrderItemsInterface>> getByOrderItemsByOrderIdAndCustomerId(@PathVariable(value = "orderId") Long orderId,
+                                                                                           @PathVariable(value = "customerId") Long customerId) {
+        return new ResponseEntity<>(orderItemsService.getByOrderItemsByOrderIdAndCustomerId(orderId, customerId), HttpStatus.OK);
     }
 }

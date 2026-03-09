@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "api/auto/order")
 public class OrderController {
@@ -33,5 +35,10 @@ public class OrderController {
                 order);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
+    }
+
+    @GetMapping("/{customerId}")
+    public ResponseEntity<List<Order>> getOrderByCustomerId(@PathVariable(value = "customerId") Long customerId) {
+        return new ResponseEntity<>(orderService.getOrderByCustomerId(customerId), HttpStatus.OK);
     }
 }

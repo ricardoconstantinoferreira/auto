@@ -1,12 +1,9 @@
 package com.ferreira.auto.service;
 
-import com.ferreira.auto.entity.OrderItems;
+import com.ferreira.auto.entity.lib.OrderItemsInterface;
 
 import java.util.List;
 
 public interface OrderItemsService {
-
-    List<OrderItems> getByCustomerId(Long customerId);
-
-    List<OrderItems> getByOrderId(Long orderId);
+    List<OrderItemsInterface> getByOrderItemsByOrderIdAndCustomerId(Long orderId, Long customerId);
 }
