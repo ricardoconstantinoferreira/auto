@@ -12,4 +12,6 @@ public interface AddressService {
     List<Address> getAll();
     boolean hasAddressByCustomer(AddressDto addressDto);
     void delete(Long id);
+    Address getAddressByCustomerId(Long customerId);
+    Address updateByCustomerId(Long customerId, AddressDto addressDto);
 }

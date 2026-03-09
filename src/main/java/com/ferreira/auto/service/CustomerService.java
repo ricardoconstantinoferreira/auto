@@ -10,6 +10,7 @@ import java.util.List;
 public interface CustomerService {
 
     Customer save(CustomerDto customerDto);
+    Customer update(Long customerId, CustomerDto customerDto);
     Customer getById(Long id);
     List<Customer> getAll();
     boolean delete(Long id);

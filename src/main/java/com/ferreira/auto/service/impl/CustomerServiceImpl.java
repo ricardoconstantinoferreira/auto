@@ -51,9 +51,29 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    public Customer update(Long customerId, CustomerDto customerDto) {
+        Customer customer = new Customer();
+        customer.setId(customerId);
+        customer.setName(customerDto.getName());
+        customer.setDocument(customerDto.getDocument());
+        customer.setEmail(customerDto.getEmail());
+
+        Customer customer1 = this.getById(customerId);
+
+        customer.setCustomerType(customer1.getCustomerType());
+        customer.setPassword(customer1.getPassword());
+        customer.setToken(customer1.getToken());
+        customer.setActive(customer1.isActive());
+
+        return customerRepository.save(customer);
+    }
+
+    @Override
     public Customer getById(Long id) {
-        Optional<Customer> customerOptional = customerRepository.findById(id);
-        return customerOptional.get();
+        Customer customer = customerRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException(messageInternationalization.getMessage("customer.not.find")));
+
+        return customer;
     }
 
     @Override

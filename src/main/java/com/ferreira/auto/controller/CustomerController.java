@@ -1,9 +1,6 @@
 package com.ferreira.auto.controller;
 
-import com.ferreira.auto.dto.CustomerDto;
-import com.ferreira.auto.dto.CustomerResponseDto;
-import com.ferreira.auto.dto.ResetPasswordDto;
-import com.ferreira.auto.dto.UpdatedPasswordDto;
+import com.ferreira.auto.dto.*;
 import com.ferreira.auto.entity.Customer;
 import com.ferreira.auto.exception.CustomerAlreadyExistsException;
 import com.ferreira.auto.infra.configuration.MessageInternationalization;
@@ -52,6 +49,19 @@ public class CustomerController {
 
         customerService.sendMailCustomer(optionalCustomer.get(),
                 messageInternationalization.getMessage("subject.password.message"));
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(customerResponseDto);
+    }
+
+    @PutMapping("/{customerId}")
+    public ResponseEntity<CustomerResponseDto> update(@PathVariable(value = "customerId") Long customerId,
+                                                      @RequestBody CustomerDto customerDto) {
+
+        Customer entity = customerService.update(customerId, customerDto);
+        Optional<Customer> optionalCustomer = Optional.ofNullable(entity);
+        CustomerResponseDto customerResponseDto = new CustomerResponseDto(
+                messageInternationalization.getMessage("customer.save.message"), "200", optionalCustomer
+        );
 
         return ResponseEntity.status(HttpStatus.CREATED).body(customerResponseDto);
     }
@@ -106,16 +116,17 @@ public class CustomerController {
     }
 
     @PutMapping("/{customerId}/updated-password")
-    public ResponseEntity<String> updatedPassword(@PathVariable(value = "customerId") Long customerId,
-                                                  @RequestBody UpdatedPasswordDto updatedPasswordDto) {
+    public ResponseEntity<UpdatedPasswordDto> updatedPassword(@PathVariable(value = "customerId") Long customerId,
+                                                              @RequestBody UpdatedPasswordDto updatedPasswordDto) {
         try {
             customerService.updatedPassword(customerId, updatedPasswordDto);
-            return new ResponseEntity<>(
+            UpdatePasswordResponseDto updatePasswordResponseDto = new UpdatePasswordResponseDto(
                     messageInternationalization.getMessage("customer.password.updated.successfully"),
-                    HttpStatus.OK
-            );
+                    "200");
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(updatedPasswordDto);
         } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return (ResponseEntity<UpdatedPasswordDto>) ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
