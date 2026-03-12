@@ -4,6 +4,7 @@ import com.ferreira.auto.dto.CustomerDto;
 import com.ferreira.auto.dto.ResetPasswordDto;
 import com.ferreira.auto.dto.UpdatedPasswordDto;
 import com.ferreira.auto.entity.Customer;
+import com.ferreira.auto.entity.CustomerType;
 import com.ferreira.auto.entity.mail.MailEvents;
 import com.ferreira.auto.infra.configuration.MessageInternationalization;
 import com.ferreira.auto.publisher.customer.SendMailPublisher;
@@ -37,7 +38,7 @@ public class CustomerServiceImpl implements CustomerService {
         Customer customer = new Customer();
         customer.setName(customerDto.getName());
         customer.setDocument(customerDto.getDocument());
-        customer.setCustomerType(customerDto.getCustomerType());
+        customer.setCustomerType(CustomerType.CUSTOMER_COMMON);
         customer.setEmail(customerDto.getEmail());
 
         if (customerDto.getId() == null) {
