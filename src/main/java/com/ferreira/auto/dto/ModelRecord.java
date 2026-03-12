@@ -6,6 +6,7 @@ public record ModelRecord(
         Long id,
         String description,
         Long carmakerId,
+        Long categoryId,
         int year,
         boolean active,
         MultipartFile image,

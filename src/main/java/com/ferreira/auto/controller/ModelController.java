@@ -67,7 +67,8 @@ public class ModelController {
             @ModelAttribute ModelRecord modelRecord
     ) {
         ModelRecord record = new ModelRecord(id, modelRecord.description(),
-                modelRecord.carmakerId(), modelRecord.year(), modelRecord.active(),
+                modelRecord.carmakerId(), modelRecord.categoryId(),
+                modelRecord.year(), modelRecord.active(),
                 modelRecord.image(), modelRecord.price());
 
         Model entity = modelService.save(record);

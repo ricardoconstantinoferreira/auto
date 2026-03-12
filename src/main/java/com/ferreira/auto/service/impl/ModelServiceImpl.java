@@ -2,10 +2,12 @@ package com.ferreira.auto.service.impl;
 
 import com.ferreira.auto.dto.ModelRecord;
 import com.ferreira.auto.entity.Carmaker;
+import com.ferreira.auto.entity.Category;
 import com.ferreira.auto.entity.Model;
 import com.ferreira.auto.infra.upload.Config;
 import com.ferreira.auto.repository.ModelRepository;
 import com.ferreira.auto.service.CarmakerService;
+import com.ferreira.auto.service.CategoryService;
 import com.ferreira.auto.service.ModelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,9 @@ public class ModelServiceImpl implements ModelService {
     @Autowired
     private CarmakerService carmakerService;
 
+    @Autowired
+    private CategoryService categoryService;
+
     @Override
     public Model save(ModelRecord modelRecord) {
         Model model = new Model();
@@ -30,12 +35,14 @@ public class ModelServiceImpl implements ModelService {
             model.setId(modelRecord.id());
         }
         Carmaker carmaker = carmakerService.getById(modelRecord.carmakerId());
+        Category category = categoryService.getById(modelRecord.categoryId());
         model.setCarmaker(carmaker);
         model.setDescription(modelRecord.description());
         model.setYear(modelRecord.year());
         model.setImage(Config.UPLOADS + "/" + modelRecord.image().getOriginalFilename());
         model.setPrice(modelRecord.price());
         model.setActive(true);
+        model.setCategory(category);
 
         return modelRepository.save(model);
     }
