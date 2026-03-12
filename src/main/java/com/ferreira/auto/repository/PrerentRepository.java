@@ -12,9 +12,9 @@ public interface PrerentRepository extends JpaRepository<Prerent, Long> {
 
     @Query(nativeQuery = true, value =
             "select p.* from prerent p \n" +
-                    "inner join customer c on c.id = p.customer_id \n" +
-                    "inner join model m on m.id = p.model_id \n" +
-                    "where p.customer_id = :customerId and p.status = 0")
+            "inner join customer c on c.id = p.customer_id \n" +
+            "inner join model m on m.id = p.model_id \n" +
+            "where p.customer_id = :customerId and p.status = 0")
     List<Prerent> findByCustomerId(Long customerId);
 
     @Query(nativeQuery = true, value =

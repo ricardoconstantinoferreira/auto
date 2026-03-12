@@ -6,4 +6,5 @@ public interface OrderItemsInterface {
     String getYear();
     String getPrice();
     String getCarmaker();
+    String getCategory();
 }
