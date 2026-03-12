@@ -21,10 +21,14 @@ public interface ModelRepository extends JpaRepository<Model, Long> {
         "m.image, \n" +
         "m.year, \n" +
         "m.carmaker_id as carmaker_id, \n" +
+        "m.category_id as category_id, \n" +
         "m.active, \n" +
         "m.price, \n" +
+        "ca.description as descriptionCategory, \n" +
         "c.description as descriptionCarmaker \n" +
-        "from model m\n" +
-        "inner join carmaker c on m.carmaker_id = c.id")
+        "from model m \n" +
+        "inner join carmaker c on m.carmaker_id = c.id \n" +
+        "inner join category ca on m.category_id = ca.id"
+    )
     List<Model> getAllModels();
 }

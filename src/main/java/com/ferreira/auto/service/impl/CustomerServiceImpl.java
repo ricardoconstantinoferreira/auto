@@ -71,10 +71,10 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer getById(Long id) {
-        Customer customer = customerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException(messageInternationalization.getMessage("customer.not.find")));
-
-        return customer;
+        return customerRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException(
+                        messageInternationalization.getMessage("customer.not.find"))
+                );
     }
 
     @Override

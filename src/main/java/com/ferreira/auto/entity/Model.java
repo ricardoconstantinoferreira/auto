@@ -37,9 +37,18 @@ public class Model extends RepresentationModel<Model> implements Serializable {
     @Column(nullable = false)
     private float price;
 
+    @ManyToOne
+    @JoinColumn(
+            name = "category_id",
+            referencedColumnName = "id"
+    )
+    private Category category;
+
     public Model() {}
 
-    public Model(Long id, String description, Carmaker carmaker, int year, String image, boolean active, float price) {
+    public Model(Long id, String description, Carmaker carmaker,
+                 int year, String image, boolean active,
+                 float price, Category category) {
         this.id = id;
         this.description = description;
         this.carmaker = carmaker;
@@ -47,6 +56,7 @@ public class Model extends RepresentationModel<Model> implements Serializable {
         this.image = image;
         this.active = active;
         this.price = price;
+        this.category = category;
     }
 
     public Long getId() {
@@ -103,5 +113,13 @@ public class Model extends RepresentationModel<Model> implements Serializable {
 
     public void setPrice(float price) {
         this.price = price;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }
