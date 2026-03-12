@@ -3,10 +3,14 @@ package com.ferreira.auto.controller;
 import com.ferreira.auto.dto.CategoryDto;
 import com.ferreira.auto.dto.CategoryResponseDto;
 import com.ferreira.auto.entity.Category;
+import com.ferreira.auto.entity.Model;
 import com.ferreira.auto.exception.CategoryAlreadyExistsException;
+import com.ferreira.auto.exception.NoRemoveCategoryException;
 import com.ferreira.auto.infra.configuration.MessageInternationalization;
 import com.ferreira.auto.service.CategoryService;
+import com.ferreira.auto.service.ModelService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +24,9 @@ public class CategoryController {
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private ModelService modelService;
 
     @Autowired
     private MessageInternationalization messageInternationalization;
@@ -60,6 +67,16 @@ public class CategoryController {
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable(value = "id") Long id) {
+        Category category = categoryService.getById(id);
+        List<Model> model = modelService.getModelByCategoryId(id);
+
+        if (!model.isEmpty()) {
+            throw new NoRemoveCategoryException(
+                    messageInternationalization.getMessage("category.noallow.remove"),
+                    category.getDescription()
+            );
+        }
+
         categoryService.delete(id);
     }
 

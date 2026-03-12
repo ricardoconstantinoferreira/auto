@@ -58,6 +58,11 @@ public class ModelServiceImpl implements ModelService {
     }
 
     @Override
+    public List<Model> getModelByCategoryId(Long categoryId) {
+        return modelRepository.getModelByCategoryId(categoryId);
+    }
+
+    @Override
     public void inactivate(Long id) {
         Model model = this.getById(id);
         model.setActive(false);

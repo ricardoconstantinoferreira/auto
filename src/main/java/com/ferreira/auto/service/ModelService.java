@@ -13,4 +13,5 @@ public interface ModelService {
     void inactivate(Long id);
     void activate(Long id);
     boolean hasModel(String description);
+    List<Model> getModelByCategoryId(Long categoryId);
 }
