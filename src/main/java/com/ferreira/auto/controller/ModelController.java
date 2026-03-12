@@ -48,7 +48,7 @@ public class ModelController {
 
         Model entity = modelService.save(modelRecord);
 
-        if (entity != null) {
+        if (entity != null && modelRecord.image() != null) {
             Files.copy(modelRecord.image().getInputStream(),
                     this.root.resolve(modelRecord.image().getOriginalFilename()),
                     StandardCopyOption.REPLACE_EXISTING);

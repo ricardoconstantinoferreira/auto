@@ -33,13 +33,16 @@ public class ModelServiceImpl implements ModelService {
 
         if (modelRecord.id() != null) {
             model.setId(modelRecord.id());
+            model.setImage(managmentImage(modelRecord));
+        } else {
+            model.setImage(Config.UPLOADS + "/" + modelRecord.image().getOriginalFilename());
         }
+
         Carmaker carmaker = carmakerService.getById(modelRecord.carmakerId());
         Category category = categoryService.getById(modelRecord.categoryId());
         model.setCarmaker(carmaker);
         model.setDescription(modelRecord.description());
         model.setYear(modelRecord.year());
-        model.setImage(Config.UPLOADS + "/" + modelRecord.image().getOriginalFilename());
         model.setPrice(modelRecord.price());
         model.setActive(true);
         model.setCategory(category);
@@ -81,5 +84,14 @@ public class ModelServiceImpl implements ModelService {
         Model model = this.getById(id);
         model.setActive(true);
         modelRepository.save(model);
+    }
+
+    private String managmentImage(ModelRecord modelRecord) {
+        if (modelRecord.image() != null) {
+            return Config.UPLOADS + "/" + modelRecord.image().getOriginalFilename();
+        }
+
+        Model model = getById(modelRecord.id());
+        return model.getImage();
     }
 }
