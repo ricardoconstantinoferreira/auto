@@ -16,6 +16,8 @@ target/
 ### ENV ###
 .env
 
+*.log
+
 ### IntelliJ IDEA ###
 .idea
 *.iws
