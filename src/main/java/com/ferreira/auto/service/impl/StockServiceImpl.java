@@ -54,6 +54,12 @@ public class StockServiceImpl implements StockService {
     public Stock update(Long id, StockDto stockDto) {
         Stock s = stockRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Stock not found"));
+        if (stockDto.getQtde() == null) {
+            throw new IllegalArgumentException("qtde is required");
+        }
+        if (stockDto.getQtde() < 0) {
+            throw new IllegalArgumentException("qtde must be non-negative");
+        }
         s.setQtde(stockDto.getQtde());
         if (stockDto.getModelId() != null) {
             Model m = modelRepository.findById(stockDto.getModelId())

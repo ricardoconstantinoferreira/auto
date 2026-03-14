@@ -16,7 +16,7 @@ public class Stock {
 
     private Integer qtde;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "model_id")
     private Model model;
 

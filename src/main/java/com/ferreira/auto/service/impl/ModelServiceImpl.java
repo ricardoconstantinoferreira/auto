@@ -54,7 +54,7 @@ public class ModelServiceImpl implements ModelService {
 
         Model modelEntity = modelRepository.save(model);
 
-        if (modelEntity != null) {
+        if (modelEntity != null && modelRecord.id() == null) {
             Stock stock = new Stock();
             stock.setModel(model);
             stock.setQtde(modelRecord.qtde());
