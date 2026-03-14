@@ -22,18 +22,15 @@ public class StockServiceImpl implements StockService {
     private ModelRepository modelRepository;
 
     @Override
-    public Stock save(StockDto stockDto) {
-        if (stockDto.getModelId() == null) {
+    public Stock save(Stock stock) {
+        if (stock.getModel().getId() == null) {
             throw new IllegalArgumentException("modelId is required");
         }
-        Optional<Model> modelOpt = modelRepository.findById(stockDto.getModelId());
+        Optional<Model> modelOpt = modelRepository.findById(stock.getModel().getId());
         if (modelOpt.isEmpty()) {
             throw new IllegalArgumentException("Model not found");
         }
 
-        Stock stock = new Stock();
-        stock.setQtde(stockDto.getQtde());
-        stock.setModel(modelOpt.get());
         return stockRepository.save(stock);
     }
 
@@ -49,7 +46,7 @@ public class StockServiceImpl implements StockService {
     }
 
     @Override
-    public List<Stock> getByModelId(Long modelId) {
+    public Stock getByModelId(Long modelId) {
         return stockRepository.findByModelId(modelId);
     }
 
@@ -71,5 +68,13 @@ public class StockServiceImpl implements StockService {
         Stock s = stockRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Stock not found"));
         stockRepository.delete(s);
+    }
+
+    @Override
+    public void updateQtdeByModelId(Long modelId) {
+        Stock stock = getByModelId(modelId);
+        stock.setQtde(stock.getQtde() - 1);
+
+        stockRepository.save(stock);
     }
 }

@@ -6,15 +6,18 @@ import com.ferreira.auto.entity.Stock;
 import java.util.List;
 
 public interface StockService {
-    Stock save(StockDto stockDto);
+
+    Stock save(Stock stock);
 
     List<Stock> getAll();
 
     Stock getById(Long id);
 
-    List<Stock> getByModelId(Long modelId);
+    Stock getByModelId(Long modelId);
 
     Stock update(Long id, StockDto stockDto);
 
     void delete(Long id);
+
+    void updateQtdeByModelId(Long modelId);
 }

@@ -8,10 +8,7 @@ import com.ferreira.auto.infra.configuration.RabbitMQConfig;
 import com.ferreira.auto.publisher.customer.SendMailPublisher;
 import com.ferreira.auto.repository.OrderItemsRepository;
 import com.ferreira.auto.repository.OrderRepository;
-import com.ferreira.auto.service.CustomerService;
-import com.ferreira.auto.service.ModelService;
-import com.ferreira.auto.service.OrderService;
-import com.ferreira.auto.service.PrerentService;
+import com.ferreira.auto.service.*;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +32,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private ModelService modelService;
+
+    @Autowired
+    private StockService stockService;
 
     @Autowired
     private PrerentService prerentService;
@@ -90,6 +90,7 @@ public class OrderServiceImpl implements OrderService {
                     totalPrice += model.getPrice();
 
                     orderItemsRepository.save(orderItems);
+                    stockService.updateQtdeByModelId(model.getId());
                 }
 
                 updatePriceTotalOrder(responseOrder.getId(), totalPrice);

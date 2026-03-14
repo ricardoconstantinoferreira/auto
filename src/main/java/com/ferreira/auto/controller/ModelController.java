@@ -69,7 +69,7 @@ public class ModelController {
         ModelRecord record = new ModelRecord(id, modelRecord.description(),
                 modelRecord.carmakerId(), modelRecord.categoryId(),
                 modelRecord.year(), modelRecord.active(),
-                modelRecord.image(), modelRecord.price());
+                modelRecord.image(), modelRecord.price(), modelRecord.qtde());
 
         Model entity = modelService.save(record);
         Optional<Model> optionalModel = Optional.ofNullable(entity);

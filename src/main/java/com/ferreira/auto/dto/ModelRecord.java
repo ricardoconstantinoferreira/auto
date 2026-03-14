@@ -10,5 +10,6 @@ public record ModelRecord(
         int year,
         boolean active,
         MultipartFile image,
-        float price
+        float price,
+        Integer qtde
 ) { }

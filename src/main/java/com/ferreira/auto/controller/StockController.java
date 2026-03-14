@@ -17,12 +17,6 @@ public class StockController {
     @Autowired
     private StockService stockService;
 
-    @PostMapping
-    public ResponseEntity<Stock> create(@RequestBody StockDto stockDto) {
-        Stock saved = stockService.save(stockDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
-    }
-
     @GetMapping
     public ResponseEntity<List<Stock>> getAll() {
         return new ResponseEntity<>(stockService.getAll(), HttpStatus.OK);
@@ -35,7 +29,7 @@ public class StockController {
     }
 
     @GetMapping("/by-model/{modelId}")
-    public ResponseEntity<List<Stock>> getByModel(@PathVariable Long modelId) {
+    public ResponseEntity<Stock> getByModel(@PathVariable Long modelId) {
         return new ResponseEntity<>(stockService.getByModelId(modelId), HttpStatus.OK);
     }
 
