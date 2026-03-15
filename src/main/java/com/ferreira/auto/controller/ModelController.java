@@ -3,6 +3,7 @@ package com.ferreira.auto.controller;
 import com.ferreira.auto.dto.ModelRecord;
 import com.ferreira.auto.dto.ModelResponseDto;
 import com.ferreira.auto.entity.Model;
+import com.ferreira.auto.entity.lib.ModelInterface;
 import com.ferreira.auto.exception.ModelAlreadyExistsException;
 import com.ferreira.auto.infra.configuration.MessageInternationalization;
 import com.ferreira.auto.infra.upload.Config;
@@ -95,7 +96,7 @@ public class ModelController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Model>> getAll() {
+    public ResponseEntity<List<ModelInterface>> getAll() {
         return new ResponseEntity<>(modelService.getAll(), HttpStatus.OK);
     }
 }
