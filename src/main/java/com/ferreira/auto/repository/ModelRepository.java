@@ -1,6 +1,7 @@
 package com.ferreira.auto.repository;
 
 import com.ferreira.auto.entity.Model;
+import com.ferreira.auto.entity.lib.ModelInterface;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -25,12 +26,15 @@ public interface ModelRepository extends JpaRepository<Model, Long> {
         "m.active, \n" +
         "m.price, \n" +
         "ca.description as descriptionCategory, \n" +
-        "c.description as descriptionCarmaker \n" +
+        "c.description as descriptionCarmaker, \n" +
+        "s.qtde as qtde \n" +
         "from model m \n" +
         "inner join carmaker c on m.carmaker_id = c.id \n" +
-        "inner join category ca on m.category_id = ca.id"
+        "inner join category ca on m.category_id = ca.id \n" +
+        "inner join stock s on s.model_id = m.id \n" +
+        "where s.qtde > 0"
     )
-    List<Model> getAllModels();
+    List<ModelInterface> getAllModels();
 
     @Query(nativeQuery = true, value =
     "select \n" +

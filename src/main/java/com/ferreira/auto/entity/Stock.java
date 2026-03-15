@@ -1,10 +1,12 @@
 package com.ferreira.auto.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-
-import jakarta.persistence.*;
 
 @Entity
 @Table(name = "stock")
@@ -16,8 +18,8 @@ public class Stock {
 
     private Integer qtde;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "model_id")
+    @OneToOne
+    @JoinColumn(name = "model_id", referencedColumnName = "id")
     private Model model;
 
     public Stock() {

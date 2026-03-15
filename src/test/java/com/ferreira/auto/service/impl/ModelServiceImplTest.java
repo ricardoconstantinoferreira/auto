@@ -3,6 +3,7 @@ package com.ferreira.auto.service.impl;
 import com.ferreira.auto.dto.ModelRecord;
 import com.ferreira.auto.entity.Carmaker;
 import com.ferreira.auto.entity.Model;
+import com.ferreira.auto.entity.lib.ModelInterface;
 import com.ferreira.auto.repository.ModelRepository;
 import com.ferreira.auto.service.CarmakerService;
 import org.junit.jupiter.api.Test;
@@ -34,7 +35,8 @@ class ModelServiceImplTest {
     @Test
     void saveMapsRecordAndPersists() {
         MockMultipartFile file = new MockMultipartFile("image", "a.png", "image/png", "x".getBytes());
-        ModelRecord record = new ModelRecord(1L, "M", 3L, 2024, true, file, 100f);
+        // ModelRecord signature: Long id, String description, Long carmakerId, Long categoryId, int year, boolean active, MultipartFile image, float price, Integer qtde
+        ModelRecord record = new ModelRecord(1L, "M", 3L, 4L, 2024, true, file, 100f, 10);
         Carmaker carmaker = new Carmaker();
         when(carmakerService.getById(3L)).thenReturn(carmaker);
         when(modelRepository.save(any(Model.class))).thenAnswer(i -> i.getArgument(0));
@@ -57,7 +59,8 @@ class ModelServiceImplTest {
 
     @Test
     void getAllDelegatesToCustomQuery() {
-        when(modelRepository.getAllModels()).thenReturn(List.of(new Model()));
+        // getAllModels returns List<ModelInterface>
+        when(modelRepository.getAllModels()).thenReturn(List.of(mock(ModelInterface.class)));
         assertEquals(1, service.getAll().size());
     }
 

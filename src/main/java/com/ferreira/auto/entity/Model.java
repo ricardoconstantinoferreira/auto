@@ -24,6 +24,9 @@ public class Model extends RepresentationModel<Model> implements Serializable {
     )
     private Carmaker carmaker;
 
+    @OneToOne(mappedBy = "model")
+    private Stock stock;
+
     @Column(nullable = false)
     private int year;
 
@@ -46,12 +49,13 @@ public class Model extends RepresentationModel<Model> implements Serializable {
 
     public Model() {}
 
-    public Model(Long id, String description, Carmaker carmaker,
+    public Model(Long id, String description, Carmaker carmaker, Stock stock,
                  int year, String image, boolean active,
                  float price, Category category) {
         this.id = id;
         this.description = description;
         this.carmaker = carmaker;
+        this.stock = stock;
         this.year = year;
         this.image = image;
         this.active = active;
@@ -121,5 +125,13 @@ public class Model extends RepresentationModel<Model> implements Serializable {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public Stock getStock() {
+        return stock;
+    }
+
+    public void setStock(Stock stock) {
+        this.stock = stock;
     }
 }

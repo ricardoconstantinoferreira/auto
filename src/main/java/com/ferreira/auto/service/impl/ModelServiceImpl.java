@@ -5,6 +5,7 @@ import com.ferreira.auto.entity.Carmaker;
 import com.ferreira.auto.entity.Category;
 import com.ferreira.auto.entity.Model;
 import com.ferreira.auto.entity.Stock;
+import com.ferreira.auto.entity.lib.ModelInterface;
 import com.ferreira.auto.infra.upload.Config;
 import com.ferreira.auto.repository.ModelRepository;
 import com.ferreira.auto.service.CarmakerService;
@@ -54,13 +55,7 @@ public class ModelServiceImpl implements ModelService {
 
         Model modelEntity = modelRepository.save(model);
 
-        if (modelEntity != null && modelRecord.id() == null) {
-            Stock stock = new Stock();
-            stock.setModel(model);
-            stock.setQtde(modelRecord.qtde());
-
-            stockService.save(stock);
-        }
+        saveStock(modelRecord, modelEntity, model);
 
         return modelEntity;
     }
@@ -72,7 +67,7 @@ public class ModelServiceImpl implements ModelService {
     }
 
     @Override
-    public List<Model> getAll() {
+    public List<ModelInterface> getAll() {
         return modelRepository.getAllModels();
     }
 
@@ -108,5 +103,19 @@ public class ModelServiceImpl implements ModelService {
 
         Model model = getById(modelRecord.id());
         return model.getImage();
+    }
+
+    private void saveStock(ModelRecord modelRecord, Model modelEntity, Model model) {
+        Stock stock = null;
+        if (modelEntity != null && modelRecord.id() == null) {
+            stock = new Stock();
+            stock.setModel(model);
+            stock.setQtde(modelRecord.qtde());
+        } else {
+            stock = stockService.getByModelId(modelRecord.id());
+            stock.setQtde(modelRecord.qtde());
+        }
+
+        stockService.save(stock);
     }
 }
