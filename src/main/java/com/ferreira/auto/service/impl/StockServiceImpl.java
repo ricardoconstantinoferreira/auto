@@ -3,6 +3,7 @@ package com.ferreira.auto.service.impl;
 import com.ferreira.auto.dto.StockDto;
 import com.ferreira.auto.entity.Model;
 import com.ferreira.auto.entity.Stock;
+import com.ferreira.auto.entity.lib.StockInterface;
 import com.ferreira.auto.repository.ModelRepository;
 import com.ferreira.auto.repository.StockRepository;
 import com.ferreira.auto.service.StockService;
@@ -48,6 +49,11 @@ public class StockServiceImpl implements StockService {
     @Override
     public Stock getByModelId(Long modelId) {
         return stockRepository.findByModelId(modelId);
+    }
+
+    @Override
+    public StockInterface findStockWithModelByModelId(Long modelId) {
+        return stockRepository.findStockWithModelByModelId(modelId);
     }
 
     @Override
