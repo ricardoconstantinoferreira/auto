@@ -3,10 +3,13 @@ package com.ferreira.auto.controller;
 import com.ferreira.auto.dto.PrerentDto;
 import com.ferreira.auto.dto.PrerentResponseDto;
 import com.ferreira.auto.entity.Prerent;
+import com.ferreira.auto.entity.lib.StockInterface;
 import com.ferreira.auto.exception.PrerentAlreadyExistsException;
+import com.ferreira.auto.exception.StockNoAvailableException;
 import com.ferreira.auto.infra.configuration.MessageInternationalization;
 import com.ferreira.auto.service.ModelService;
 import com.ferreira.auto.service.PrerentService;
+import com.ferreira.auto.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +28,9 @@ public class PrerentController {
     private ModelService modelService;
 
     @Autowired
+    private StockService stockService;
+
+    @Autowired
     private MessageInternationalization messageInternationalization;
 
     @PostMapping
@@ -32,6 +38,14 @@ public class PrerentController {
         if (prerentService.validateDataPrerent(prerentDto)) {
             throw new PrerentAlreadyExistsException(
                     messageInternationalization.getMessage("prerent.not.car"),
+                    prerentDto.getModelId()
+            );
+        }
+
+        StockInterface stock = stockService.findStockWithModelByModelId(prerentDto.getModelId());
+        if (stock == null || stock.getQtde() <= 0) {
+            throw new StockNoAvailableException(
+                    messageInternationalization.getMessage("order.no.stock.this.item"),
                     prerentDto.getModelId()
             );
         }
