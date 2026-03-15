@@ -4,11 +4,13 @@ import com.ferreira.auto.dto.ModelRecord;
 import com.ferreira.auto.entity.Carmaker;
 import com.ferreira.auto.entity.Category;
 import com.ferreira.auto.entity.Model;
+import com.ferreira.auto.entity.Stock;
 import com.ferreira.auto.infra.upload.Config;
 import com.ferreira.auto.repository.ModelRepository;
 import com.ferreira.auto.service.CarmakerService;
 import com.ferreira.auto.service.CategoryService;
 import com.ferreira.auto.service.ModelService;
+import com.ferreira.auto.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +28,9 @@ public class ModelServiceImpl implements ModelService {
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private StockService stockService;
 
     @Override
     public Model save(ModelRecord modelRecord) {
@@ -47,7 +52,17 @@ public class ModelServiceImpl implements ModelService {
         model.setActive(true);
         model.setCategory(category);
 
-        return modelRepository.save(model);
+        Model modelEntity = modelRepository.save(model);
+
+        if (modelEntity != null && modelRecord.id() == null) {
+            Stock stock = new Stock();
+            stock.setModel(model);
+            stock.setQtde(modelRecord.qtde());
+
+            stockService.save(stock);
+        }
+
+        return modelEntity;
     }
 
     @Override

@@ -3,23 +3,20 @@ package com.ferreira.auto.service.impl;
 import com.ferreira.auto.dto.ItemsDto;
 import com.ferreira.auto.dto.OrderDto;
 import com.ferreira.auto.entity.*;
+import com.ferreira.auto.entity.lib.StockInterface;
 import com.ferreira.auto.entity.mail.MailEvents;
 import com.ferreira.auto.infra.configuration.RabbitMQConfig;
 import com.ferreira.auto.publisher.customer.SendMailPublisher;
 import com.ferreira.auto.repository.OrderItemsRepository;
 import com.ferreira.auto.repository.OrderRepository;
-import com.ferreira.auto.service.CustomerService;
-import com.ferreira.auto.service.ModelService;
-import com.ferreira.auto.service.OrderService;
-import com.ferreira.auto.service.PrerentService;
+import com.ferreira.auto.service.*;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -35,6 +32,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private ModelService modelService;
+
+    @Autowired
+    private StockService stockService;
 
     @Autowired
     private PrerentService prerentService;
@@ -135,5 +135,45 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
+    @Override
+    public Map<String, List<StockInterface>> validateItemsQtdeOrders(List<ItemsDto> itemsDtos) {
+        List<StockInterface> itemsWithQtde = new ArrayList<>();
+        List<StockInterface> itemsWithoutQtde = new ArrayList<>();
+        Map<String, List<StockInterface>> maps = new HashMap<>();
+
+        for (ItemsDto item: itemsDtos) {
+            StockInterface stock = stockService.findStockWithModelByModelId(item.getModelId());
+
+            if (stock.getQtde() > 0) {
+                itemsWithQtde.add(stock);
+            } else {
+                itemsWithoutQtde.add(stock);
+            }
+        }
+
+        maps.put("with_qty", itemsWithQtde);
+        maps.put("without_qty", itemsWithoutQtde);
+        return maps;
+    }
+
+    @Override
+    public OrderDto getItemsNoEmpty(OrderDto orderDto, ArrayList<StockInterface> stockWithoutQty) {
+        List<ItemsDto> items = orderDto.getItemsDto();
+        List<ItemsDto> dtoItems = new ArrayList<>();
+        OrderDto orderDto1 = new OrderDto();
+
+        for (ItemsDto item: items) {
+            for (StockInterface stock: stockWithoutQty) {
+                if (item.getModelId().equals(stock.getId())) {
+                    dtoItems.add(item);
+                }
+            }
+        }
+
+        orderDto1.setCustomerId(orderDto.getCustomerId());
+        orderDto1.setItemsDto(dtoItems);
+
+        return orderDto1;
+    }
 
 }
