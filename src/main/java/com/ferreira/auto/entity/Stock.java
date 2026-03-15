@@ -1,5 +1,6 @@
 package com.ferreira.auto.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,6 +21,7 @@ public class Stock {
 
     @OneToOne
     @JoinColumn(name = "model_id", referencedColumnName = "id")
+    @JsonIgnore
     private Model model;
 
     public Stock() {

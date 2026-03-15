@@ -1,11 +1,13 @@
 package com.ferreira.auto.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serializable;
 
+@JsonIgnoreProperties({"stock"})
 @Entity
 @Table(name = "model")
 public class Model extends RepresentationModel<Model> implements Serializable {

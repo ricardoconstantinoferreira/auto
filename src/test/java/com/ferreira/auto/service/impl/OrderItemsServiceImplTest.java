@@ -24,13 +24,13 @@ class OrderItemsServiceImplTest {
 
     @Test
     void getByCustomerIdDelegates() {
-        when(orderItemsRepository.findByCustomerId(1L)).thenReturn(List.of(new OrderItems()));
+        when(orderItemsRepository.findByOrderByCustomerId(1L)).thenReturn(List.of(new OrderItems()));
         assertEquals(1, service.getByCustomerId(1L).size());
     }
 
     @Test
     void getByOrderIdDelegates() {
-        when(orderItemsRepository.findByOrderId(2L)).thenReturn(List.of(new OrderItems()));
+        when(orderItemsRepository.findByOrderByOrderId(2L)).thenReturn(List.of(new OrderItems()));
         assertEquals(1, service.getByOrderId(2L).size());
     }
 }
