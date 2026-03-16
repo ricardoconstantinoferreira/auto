@@ -3,6 +3,7 @@ package com.ferreira.auto.controller;
 import com.ferreira.auto.dto.OrderDto;
 import com.ferreira.auto.dto.OrderResponseDto;
 import com.ferreira.auto.entity.Order;
+import com.ferreira.auto.entity.lib.OrderInterface;
 import com.ferreira.auto.entity.lib.StockInterface;
 import com.ferreira.auto.exception.OrderWithoutStockException;
 import com.ferreira.auto.exception.PartialOrderPlacedException;
@@ -65,5 +66,11 @@ public class OrderController {
     @GetMapping("/{customerId}")
     public ResponseEntity<List<Order>> getOrderByCustomerId(@PathVariable(value = "customerId") Long customerId) {
         return new ResponseEntity<>(orderService.getOrderByCustomerId(customerId), HttpStatus.OK);
+    }
+
+    @GetMapping("/list-rent")
+    public ResponseEntity<List<OrderInterface>> getListOrderRent() {
+        List<OrderInterface> list = orderService.findByListOrderRent();
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
 }

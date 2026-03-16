@@ -5,6 +5,7 @@ import com.ferreira.auto.dto.OrderDto;
 import com.ferreira.auto.entity.Customer;
 import com.ferreira.auto.entity.Order;
 import com.ferreira.auto.entity.lib.StockInterface;
+import com.ferreira.auto.entity.lib.OrderInterface;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,4 +19,5 @@ public interface OrderService {
     void sendMailOrder(Customer customer, String subject, Order order);
     Map<String, List<StockInterface>> validateItemsQtdeOrders(List<ItemsDto> itemsDtos);
     OrderDto getItemsNoEmpty(OrderDto orderDto, ArrayList<StockInterface> stockWithoutQty);
+    List<OrderInterface> findByListOrderRent();
 }

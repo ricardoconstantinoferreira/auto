@@ -4,6 +4,7 @@ import com.ferreira.auto.dto.ItemsDto;
 import com.ferreira.auto.dto.OrderDto;
 import com.ferreira.auto.entity.*;
 import com.ferreira.auto.entity.lib.StockInterface;
+import com.ferreira.auto.entity.lib.OrderInterface;
 import com.ferreira.auto.entity.mail.MailEvents;
 import com.ferreira.auto.infra.configuration.RabbitMQConfig;
 import com.ferreira.auto.publisher.customer.SendMailPublisher;
@@ -178,4 +179,8 @@ public class OrderServiceImpl implements OrderService {
         return orderDto1;
     }
 
+    @Override
+    public List<OrderInterface> findByListOrderRent() {
+        return orderRepository.findByListOrderRent();
+    }
 }
