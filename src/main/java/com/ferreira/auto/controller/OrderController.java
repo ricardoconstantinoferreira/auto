@@ -68,9 +68,9 @@ public class OrderController {
         return new ResponseEntity<>(orderService.getOrderByCustomerId(customerId), HttpStatus.OK);
     }
 
-    @GetMapping("/list-rent")
-    public ResponseEntity<List<OrderInterface>> getListOrderRent() {
-        List<OrderInterface> list = orderService.findByListOrderRent();
+    @GetMapping("/list-rent/{status}")
+    public ResponseEntity<List<OrderInterface>> getListOrderRent(@PathVariable(value = "status") Long status) {
+        List<OrderInterface> list = orderService.findByListOrderRent(status);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 }

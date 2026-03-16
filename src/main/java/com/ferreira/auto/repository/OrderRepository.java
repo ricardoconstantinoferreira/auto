@@ -1,9 +1,11 @@
 package com.ferreira.auto.repository;
 
 import com.ferreira.auto.entity.Order;
+import com.ferreira.auto.entity.StatusOrder;
 import com.ferreira.auto.entity.lib.OrderInterface;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -19,7 +21,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     @Query("select c.name as customer, o.dateOrder as dateOrder, o.totalPrice as totalPrice, " +
             "o.statusOrder as statusOrder, o.interestValuePayment as interestValuePayment " +
-            "from Order o join o.customer c")
-    List<OrderInterface> findByListOrderRent();
+            "from Order o join o.customer c where o.statusOrder = :status")
+    List<OrderInterface> findByListOrderRent(@Param("status") StatusOrder status);
 
 }

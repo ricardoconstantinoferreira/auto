@@ -180,7 +180,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderInterface> findByListOrderRent() {
-        return orderRepository.findByListOrderRent();
+    public List<OrderInterface> findByListOrderRent(Long status) {
+        StatusOrder statusOrder = (status == 0) ? StatusOrder.RENTED : StatusOrder.RETURNED;
+        return orderRepository.findByListOrderRent(statusOrder);
     }
 }
