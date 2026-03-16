@@ -20,4 +20,6 @@ public interface OrderService {
     Map<String, List<StockInterface>> validateItemsQtdeOrders(List<ItemsDto> itemsDtos);
     OrderDto getItemsNoEmpty(OrderDto orderDto, ArrayList<StockInterface> stockWithoutQty);
     List<OrderInterface> findByListOrderRent(Long status);
+    Order getReturnedValuesModels(Long orderId);
+    Order getById(Long orderId);
 }

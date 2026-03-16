@@ -25,9 +25,9 @@ public class RentalController {
     @PostMapping
     public ResponseEntity<Rental> save(@RequestBody RentalDto rentalDto) {
 
-        List<Rental> rental = rentalService.getAll();
+        Rental rental = rentalService.getRental();
 
-        if (rental.size() > 0) {
+        if (rental != null) {
             throw new RentalAlreadyExistsException(messageInternationalization.getMessage("rental.already"), "rental");
         }
 
@@ -36,22 +36,12 @@ public class RentalController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Rental>> getAll() {
-        return new ResponseEntity<>(rentalService.getAll(), HttpStatus.OK);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Rental> getById(@PathVariable Long id) {
-        return new ResponseEntity<>(rentalService.getById(id), HttpStatus.OK);
+    public ResponseEntity<Rental> getRental() {
+        return new ResponseEntity<>(rentalService.getRental(), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Rental> update(@PathVariable Long id, @RequestBody RentalDto rentalDto) {
         return new ResponseEntity<>(rentalService.update(id, rentalDto), HttpStatus.OK);
-    }
-
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        rentalService.delete(id);
     }
 }

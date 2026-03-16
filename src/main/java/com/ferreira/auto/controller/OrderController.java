@@ -73,4 +73,10 @@ public class OrderController {
         List<OrderInterface> list = orderService.findByListOrderRent(status);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
+
+    @PutMapping("/returned/{orderId}")
+    public ResponseEntity<Order> getReturnedValuesModels(@PathVariable(value = "orderId") Long orderId) {
+        Order order = orderService.getReturnedValuesModels(orderId);
+        return new ResponseEntity<>(order, HttpStatus.OK);
+    }
 }

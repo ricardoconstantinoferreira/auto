@@ -8,8 +8,6 @@ import java.util.List;
 public interface RentalService {
 
     Rental save(RentalDto rentalDto);
-    List<Rental> getAll();
-    Rental getById(Long id);
+    Rental getRental();
     Rental update(Long id, RentalDto rentalDto);
-    void delete(Long id);
 }

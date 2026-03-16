@@ -25,14 +25,16 @@ public class RentalServiceImpl implements RentalService {
     }
 
     @Override
-    public List<Rental> getAll() {
-        return rentalRepository.findAll();
+    public Rental getRental() {
+        Rental rental = null;
+        List<Rental> rentals = rentalRepository.findAll();
+
+        if (!rentals.isEmpty()) {
+            rental = rentals.get(0);
+        }
+        return rental;
     }
 
-    @Override
-    public Rental getById(Long id) {
-        return rentalRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Rental not found"));
-    }
 
     @Override
     public Rental update(Long id, RentalDto rentalDto) {
@@ -44,11 +46,5 @@ public class RentalServiceImpl implements RentalService {
         rental.setQtdeDaysRent(rentalDto.getQtdeDaysRent());
         rental.setPercentageInterest(rentalDto.getPercentageInterest());
         return rentalRepository.save(rental);
-    }
-
-    @Override
-    public void delete(Long id) {
-        Rental rental = rentalRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Rental not found"));
-        rentalRepository.delete(rental);
     }
 }
