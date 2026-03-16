@@ -27,13 +27,22 @@ public class Order extends RepresentationModel<Order> implements Serializable {
     @Column(nullable = false)
     private float totalPrice;
 
+    @Column(nullable = false)
+    private StatusOrder statusOrder;
+
+    @Column(nullable = false)
+    private float interestValuePayment;
+
     public Order() {}
 
-    public Order(Long id, Customer customer, LocalDateTime dateOrder, float totalPrice) {
+    public Order(Long id, Customer customer, LocalDateTime dateOrder,
+                 float totalPrice, StatusOrder statusOrder, float interestValuePayment) {
         this.id = id;
         this.customer = customer;
         this.dateOrder = dateOrder;
         this.totalPrice = totalPrice;
+        this.statusOrder = statusOrder;
+        this.interestValuePayment = interestValuePayment;
     }
 
     public Long getId() {
@@ -66,5 +75,21 @@ public class Order extends RepresentationModel<Order> implements Serializable {
 
     public void setTotalPrice(float totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public StatusOrder getStatusOrder() {
+        return statusOrder;
+    }
+
+    public void setStatusOrder(StatusOrder statusOrder) {
+        this.statusOrder = statusOrder;
+    }
+
+    public float getInterestValuePayment() {
+        return interestValuePayment;
+    }
+
+    public void setInterestValuePayment(float interestValuePayment) {
+        this.interestValuePayment = interestValuePayment;
     }
 }

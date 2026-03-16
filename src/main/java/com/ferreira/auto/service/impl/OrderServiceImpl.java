@@ -75,6 +75,8 @@ public class OrderServiceImpl implements OrderService {
             order.setCustomer(customer);
             order.setDateOrder(LocalDateTime.now());
             order.setTotalPrice(0);
+            order.setStatusOrder(StatusOrder.RENTED);
+            order.setInterestValuePayment(0);
 
             Order responseOrder = orderRepository.save(order);
 

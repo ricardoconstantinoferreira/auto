@@ -13,7 +13,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     Optional<Order> findById(Long id);
 
-    // Use JPQL instead of native SQL so JPA can properly map the entity relationships
     @Query("SELECT o FROM Order o WHERE o.customer.id = :customerId")
     List<Order> findByCustomerId(Long customerId);
 
