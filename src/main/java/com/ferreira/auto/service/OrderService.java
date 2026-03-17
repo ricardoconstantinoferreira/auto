@@ -22,4 +22,5 @@ public interface OrderService {
     List<OrderInterface> findByListOrderRent(Long status);
     Order getReturnedValuesModels(Long orderId);
     Order getById(Long orderId);
+    void addQtyReturnModel(Long orderId);
 }

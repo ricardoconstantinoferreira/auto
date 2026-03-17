@@ -2,6 +2,7 @@ package com.ferreira.auto.service.impl;
 
 import com.ferreira.auto.dto.StockDto;
 import com.ferreira.auto.entity.Model;
+import com.ferreira.auto.entity.StatusOrder;
 import com.ferreira.auto.entity.Stock;
 import com.ferreira.auto.entity.lib.StockInterface;
 import com.ferreira.auto.repository.ModelRepository;
@@ -83,9 +84,14 @@ public class StockServiceImpl implements StockService {
     }
 
     @Override
-    public void updateQtdeByModelId(Long modelId) {
+    public void updateQtdeByModelId(Long modelId, StatusOrder statusOrder) {
         Stock stock = getByModelId(modelId);
-        stock.setQtde(stock.getQtde() - 1);
+
+        if (statusOrder == StatusOrder.RENTED) {
+            stock.setQtde(stock.getQtde() - 1);
+        } else {
+            stock.setQtde(stock.getQtde() + 1);
+        }
 
         stockRepository.save(stock);
     }

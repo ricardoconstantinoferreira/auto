@@ -97,6 +97,7 @@ public class OrderServiceImpl implements OrderService {
                     totalPrice += model.getPrice();
 
                     orderItemsRepository.save(orderItems);
+                    stockService.updateQtdeByModelId(dto.getModelId(), StatusOrder.RENTED);
                 }
 
                 updatePriceTotalOrder(responseOrder.getId(), totalPrice);
@@ -213,5 +214,14 @@ public class OrderServiceImpl implements OrderService {
     public Order getById(Long orderId) {
         return orderRepository.findById(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("Order not found"));
+    }
+
+    @Override
+    public void addQtyReturnModel(Long orderId) {
+        List<OrderItems> orderItems = orderItemsRepository.findByOrderId(orderId);
+
+        for (OrderItems orderItem: orderItems) {
+            stockService.updateQtdeByModelId(orderItem.getModel().getId(), StatusOrder.RETURNED);
+        }
     }
 }

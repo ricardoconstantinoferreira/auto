@@ -77,6 +77,7 @@ public class OrderController {
     @PutMapping("/returned/{orderId}")
     public ResponseEntity<Order> getReturnedValuesModels(@PathVariable(value = "orderId") Long orderId) {
         Order order = orderService.getReturnedValuesModels(orderId);
+        orderService.addQtyReturnModel(orderId);
         return new ResponseEntity<>(order, HttpStatus.OK);
     }
 }

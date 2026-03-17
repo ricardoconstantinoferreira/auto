@@ -19,7 +19,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query("SELECT o FROM Order o WHERE o.customer.id = :customerId")
     List<Order> findByCustomerId(Long customerId);
 
-    @Query("select c.name as customer, o.dateOrder as dateOrder, o.totalPrice as totalPrice, " +
+    @Query("select o.id as id, c.name as customer, o.dateOrder as dateOrder, o.totalPrice as totalPrice, " +
             "o.statusOrder as statusOrder, o.interestValuePayment as interestValuePayment " +
             "from Order o join o.customer c where o.statusOrder = :status")
     List<OrderInterface> findByListOrderRent(@Param("status") StatusOrder status);
