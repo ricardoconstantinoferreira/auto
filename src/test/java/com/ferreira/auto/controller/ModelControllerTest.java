@@ -3,6 +3,7 @@ package com.ferreira.auto.controller;
 import com.ferreira.auto.dto.ModelRecord;
 import com.ferreira.auto.dto.ModelResponseDto;
 import com.ferreira.auto.entity.Model;
+import com.ferreira.auto.entity.lib.ModelInterface;
 import com.ferreira.auto.exception.ModelAlreadyExistsException;
 import com.ferreira.auto.infra.configuration.MessageInternationalization;
 import com.ferreira.auto.infra.upload.Config;
@@ -23,6 +24,8 @@ import java.nio.file.Path;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -45,8 +48,8 @@ class ModelControllerTest {
 
     @Test
     void saveThrowsWhenDuplicateOnNewRecord() {
-        ModelRecord record = new ModelRecord(null, "Model X", 1L, 2024, true,
-                new MockMultipartFile("image", "test-model.png", "image/png", "x".getBytes()), 10f);
+        MockMultipartFile file = new MockMultipartFile("image", "test-model.png", "image/png", "x".getBytes());
+        ModelRecord record = new ModelRecord(null, "Model X", 1L, 1L, 2024, true, file, 10f, 10);
 
         when(modelService.hasModel("Model X")).thenReturn(true);
         when(messageInternationalization.getMessage("model.exists.message")).thenReturn("exists");
@@ -56,8 +59,8 @@ class ModelControllerTest {
 
     @Test
     void saveReturnsCreatedAndCopiesFile() throws IOException {
-        ModelRecord record = new ModelRecord(null, "Model X", 1L, 2024, true,
-                new MockMultipartFile("image", "test-model.png", "image/png", "abc".getBytes()), 10f);
+        MockMultipartFile file = new MockMultipartFile("image", "test-model.png", "image/png", "abc".getBytes());
+        ModelRecord record = new ModelRecord(null, "Model X", 1L, 1L, 2024, true, file, 10f, 10);
         Model model = new Model();
 
         when(modelService.hasModel("Model X")).thenReturn(false);
@@ -73,7 +76,7 @@ class ModelControllerTest {
     @Test
     void updateReturnsCreated() {
         MockMultipartFile file = new MockMultipartFile("image", "test-model.png", "image/png", "x".getBytes());
-        ModelRecord record = new ModelRecord(null, "Model X", 1L, 2024, true, file, 10f);
+        ModelRecord record = new ModelRecord(null, "Model X", 1L, 1L, 2024, true, file, 10f, 10);
 
         when(modelService.save(any())).thenReturn(new Model());
         when(messageInternationalization.getMessage("model.updated.message")).thenReturn("updated");
@@ -109,9 +112,10 @@ class ModelControllerTest {
 
     @Test
     void getAllReturnsOk() {
-        when(modelService.getAll()).thenReturn(List.of(new Model()));
+        ModelInterface projection = mock(ModelInterface.class);
+        when(modelService.getAll()).thenReturn(List.of(projection));
 
-        ResponseEntity<List<Model>> response = controller.getAll();
+        ResponseEntity<List<ModelInterface>> response = controller.getAll();
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(1, response.getBody().size());

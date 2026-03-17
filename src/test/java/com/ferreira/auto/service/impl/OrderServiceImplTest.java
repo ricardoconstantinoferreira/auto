@@ -12,6 +12,7 @@ import com.ferreira.auto.repository.OrderRepository;
 import com.ferreira.auto.service.CustomerService;
 import com.ferreira.auto.service.ModelService;
 import com.ferreira.auto.service.PrerentService;
+import com.ferreira.auto.service.StockService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -44,6 +45,9 @@ class OrderServiceImplTest {
 
     @Mock
     private PrerentService prerentService;
+
+    @Mock
+    private StockService stockService;
 
     @Mock
     private RabbitTemplate rabbitTemplate;

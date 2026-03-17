@@ -3,9 +3,9 @@ package com.ferreira.auto.controller;
 import com.ferreira.auto.dto.PrerentDto;
 import com.ferreira.auto.dto.PrerentResponseDto;
 import com.ferreira.auto.entity.Prerent;
+import com.ferreira.auto.entity.lib.StockInterface;
 import com.ferreira.auto.exception.PrerentAlreadyExistsException;
 import com.ferreira.auto.infra.configuration.MessageInternationalization;
-import com.ferreira.auto.service.ModelService;
 import com.ferreira.auto.service.PrerentService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,7 +28,7 @@ class PrerentControllerTest {
     private PrerentService prerentService;
 
     @Mock
-    private ModelService modelService;
+    private com.ferreira.auto.service.StockService stockService;
 
     @Mock
     private MessageInternationalization messageInternationalization;
@@ -49,10 +49,18 @@ class PrerentControllerTest {
     @Test
     void saveReturnsCreated() {
         PrerentDto dto = new PrerentDto();
+        dto.setModelId(1L);
         PrerentResponseDto responseDto = new PrerentResponseDto("ok", "200", Optional.of(new Prerent()));
 
-        when(prerentService.validateDataPrerent(dto)).thenReturn(false);
-        when(prerentService.save(dto)).thenReturn(responseDto);
+        // mock validar dados
+        when(prerentService.validateDataPrerent(any())).thenReturn(false);
+
+        // mock estoque disponível
+        StockInterface stock = mock(StockInterface.class);
+        when(stock.getQtde()).thenReturn(5);
+        when(stockService.findStockWithModelByModelId(anyLong())).thenReturn(stock);
+
+        when(prerentService.save(any())).thenReturn(responseDto);
 
         ResponseEntity<PrerentResponseDto> response = controller.save(dto);
 

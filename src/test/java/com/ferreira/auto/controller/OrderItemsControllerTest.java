@@ -1,6 +1,6 @@
 package com.ferreira.auto.controller;
 
-import com.ferreira.auto.entity.OrderItems;
+import com.ferreira.auto.entity.lib.OrderItemsInterface;
 import com.ferreira.auto.service.OrderItemsService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -25,20 +26,11 @@ class OrderItemsControllerTest {
     private OrderItemsController controller;
 
     @Test
-    void getByCustomerIdReturnsOk() {
-        when(orderItemsService.getByCustomerId(3L)).thenReturn(List.of(new OrderItems()));
+    void getByOrderItemsByOrderIdAndCustomerIdReturnsOk() {
+        OrderItemsInterface oi = mock(OrderItemsInterface.class);
+        when(orderItemsService.getByOrderItemsByOrderIdAndCustomerId(5L, 3L)).thenReturn(List.of(oi));
 
-        ResponseEntity<List<OrderItems>> response = controller.getByCustomerId(3L);
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(1, response.getBody().size());
-    }
-
-    @Test
-    void getByOrderIdReturnsOk() {
-        when(orderItemsService.getByOrderId(4L)).thenReturn(List.of(new OrderItems()));
-
-        ResponseEntity<List<OrderItems>> response = controller.getByOrderId(4L);
+        ResponseEntity<List<OrderItemsInterface>> response = controller.getByOrderItemsByOrderIdAndCustomerId(5L, 3L);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(1, response.getBody().size());
