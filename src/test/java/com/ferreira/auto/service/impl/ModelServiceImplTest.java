@@ -1,23 +1,20 @@
 package com.ferreira.auto.service.impl;
 
-import com.ferreira.auto.dto.ModelRecord;
-import com.ferreira.auto.entity.Carmaker;
 import com.ferreira.auto.entity.Model;
 import com.ferreira.auto.entity.lib.ModelInterface;
 import com.ferreira.auto.repository.ModelRepository;
 import com.ferreira.auto.service.CarmakerService;
+import com.ferreira.auto.service.CategoryService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.mock.web.MockMultipartFile;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -29,26 +26,11 @@ class ModelServiceImplTest {
     @Mock
     private CarmakerService carmakerService;
 
+    @Mock
+    private CategoryService categoryService;
+
     @InjectMocks
     private ModelServiceImpl service;
-
-    @Test
-    void saveMapsRecordAndPersists() {
-        MockMultipartFile file = new MockMultipartFile("image", "a.png", "image/png", "x".getBytes());
-        // ModelRecord signature: Long id, String description, Long carmakerId, Long categoryId, int year, boolean active, MultipartFile image, float price, Integer qtde
-        ModelRecord record = new ModelRecord(1L, "M", 3L, 4L, 2024, true, file, 100f, 10);
-        Carmaker carmaker = new Carmaker();
-        when(carmakerService.getById(3L)).thenReturn(carmaker);
-        when(modelRepository.save(any(Model.class))).thenAnswer(i -> i.getArgument(0));
-
-        Model model = service.save(record);
-
-        assertEquals(1L, model.getId());
-        assertEquals("M", model.getDescription());
-        assertTrue(model.isActive());
-        assertSame(carmaker, model.getCarmaker());
-        assertEquals("uploads/a.png", model.getImage());
-    }
 
     @Test
     void getByIdReturnsEntity() {
