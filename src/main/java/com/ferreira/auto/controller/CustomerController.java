@@ -47,8 +47,8 @@ public class CustomerController {
                 messageInternationalization.getMessage("customer.save.message"), "200", optionalCustomer
         );
 
-        customerService.sendMailCustomer(optionalCustomer.get(),
-                messageInternationalization.getMessage("subject.password.message"));
+//        customerService.sendMailCustomer(optionalCustomer.get(),
+//                messageInternationalization.getMessage("subject.password.message"));
 
         return ResponseEntity.status(HttpStatus.CREATED).body(customerResponseDto);
     }
