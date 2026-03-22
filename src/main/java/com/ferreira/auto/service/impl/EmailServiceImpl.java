@@ -18,7 +18,6 @@ import com.resend.Resend;
 import com.resend.services.emails.model.CreateEmailOptions;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.Base64;
 import java.util.Collections;
 
@@ -38,7 +37,7 @@ public class EmailServiceImpl implements EmailService {
     private String apiKey;
 
     @Override
-    public void sendEmail(MailEvents mailEvents, MailStrategy mailStrategy) throws MessagingException, IOException, ResendException {
+    public void sendEmail(MailEvents mailEvents, MailStrategy mailStrategy) throws  IOException, ResendException {
 
         Resend resend = new Resend(apiKey);
 

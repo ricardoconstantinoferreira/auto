@@ -35,8 +35,6 @@ public class SendMailListener implements ApplicationListener<MailEvents> {
         try {
             MailStrategy mailStrategy = mailStrategys.get(event.getType());
             emailService.sendEmail(event, mailStrategy);
-        } catch (MessagingException e) {
-            throw new RuntimeException(e);
         } catch (ResendException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {

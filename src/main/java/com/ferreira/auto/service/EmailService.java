@@ -10,5 +10,5 @@ import java.io.UnsupportedEncodingException;
 
 public interface EmailService {
 
-    void sendEmail(MailEvents mailEvents, MailStrategy mailStrategy) throws MessagingException, IOException, ResendException;
+    void sendEmail(MailEvents mailEvents, MailStrategy mailStrategy) throws  IOException, ResendException;
 }
