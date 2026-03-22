@@ -3,11 +3,13 @@ package com.ferreira.auto.listener.customer;
 import com.ferreira.auto.entity.mail.MailEvents;
 import com.ferreira.auto.service.EmailService;
 import com.ferreira.auto.strategy.MailStrategy;
+import com.resend.core.exception.ResendException;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +37,9 @@ public class SendMailListener implements ApplicationListener<MailEvents> {
             emailService.sendEmail(event, mailStrategy);
         } catch (MessagingException e) {
             throw new RuntimeException(e);
-        } catch (UnsupportedEncodingException e) {
+        } catch (ResendException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
