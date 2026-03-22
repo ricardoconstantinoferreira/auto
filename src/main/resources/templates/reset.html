@@ -11,7 +11,7 @@
 
         <p>Por favor, clique no link abaixo para resetar sua senha!</p>
         <p>
-            <a th:href="@{http://localhost:4200/reset-password(id=${id})}">Resetar Senha</a>
+            <a th:href="${frontendUrl + '/reset-password?id=' + id}">Resetar Senha</a>
         </p>
 
         <div>
