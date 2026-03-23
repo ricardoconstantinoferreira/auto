@@ -14,7 +14,7 @@ public class CorsConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**") // Libera todos os caminhos da API
+        registry.addMapping("/**")
                 .allowedOrigins(environment.getProperty("FERREIRA_AUTO_URL_FRONT", ""))
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
