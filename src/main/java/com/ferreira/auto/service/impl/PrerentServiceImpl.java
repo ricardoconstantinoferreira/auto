@@ -11,9 +11,10 @@ import com.ferreira.auto.repository.PrerentRepository;
 import com.ferreira.auto.service.CustomerService;
 import com.ferreira.auto.service.ModelService;
 import com.ferreira.auto.service.PrerentService;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -80,6 +81,7 @@ public class PrerentServiceImpl implements PrerentService {
     }
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void changedStatus(Long customerId) {
         List<Prerent> prerents = prerentRepository.findByCustomerId(customerId);
 

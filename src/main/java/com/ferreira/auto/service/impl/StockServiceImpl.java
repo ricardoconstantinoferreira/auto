@@ -10,6 +10,8 @@ import com.ferreira.auto.repository.StockRepository;
 import com.ferreira.auto.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -84,6 +86,7 @@ public class StockServiceImpl implements StockService {
     }
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void updateQtdeByModelId(Long modelId, StatusOrder statusOrder) {
         Stock stock = getByModelId(modelId);
 
