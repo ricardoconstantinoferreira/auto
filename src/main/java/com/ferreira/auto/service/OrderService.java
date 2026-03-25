@@ -13,7 +13,6 @@ import java.util.Map;
 
 public interface OrderService {
 
-    Order sendRabbit(OrderDto orderDto);
     Order save(OrderDto orderDto);
     List<Order> getOrderByCustomerId(Long customerId);
     void sendMailOrder(Customer customer, String subject, Order order);
