@@ -44,7 +44,7 @@ public class OrderController {
             orderDto = orderService.getItemsNoEmpty(orderDto, (ArrayList<StockInterface>) stockDetails.get("with_qty"));
         }
 
-        Order order = orderService.sendRabbit(orderDto);
+        Order order = orderService.save(orderDto);
         OrderResponseDto responseDto = new OrderResponseDto(
                 messageInternationalization.getMessage("order.add.done"),
                 "201",

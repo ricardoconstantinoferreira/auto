@@ -6,7 +6,7 @@ import com.ferreira.auto.entity.Category;
 import com.ferreira.auto.entity.Model;
 import com.ferreira.auto.entity.Stock;
 import com.ferreira.auto.entity.lib.ModelInterface;
-import com.ferreira.auto.infra.upload.Config;
+import com.ferreira.auto.infra.upload.CloudinaryService;
 import com.ferreira.auto.repository.ModelRepository;
 import com.ferreira.auto.service.CarmakerService;
 import com.ferreira.auto.service.CategoryService;
@@ -33,6 +33,9 @@ public class ModelServiceImpl implements ModelService {
     @Autowired
     private StockService stockService;
 
+    @Autowired
+    private CloudinaryService cloudinaryService;
+
     @Override
     public Model save(ModelRecord modelRecord) {
         Model model = new Model();
@@ -41,7 +44,12 @@ public class ModelServiceImpl implements ModelService {
             model.setId(modelRecord.id());
             model.setImage(managmentImage(modelRecord));
         } else {
-            model.setImage(Config.UPLOADS + "/" + modelRecord.image().getOriginalFilename());
+            if (modelRecord.image() != null) {
+                String uploaded = cloudinaryService.upload(modelRecord.image());
+                model.setImage(uploaded);
+            } else {
+                model.setImage(null);
+            }
         }
 
         Carmaker carmaker = carmakerService.getById(modelRecord.carmakerId());
@@ -98,7 +106,7 @@ public class ModelServiceImpl implements ModelService {
 
     private String managmentImage(ModelRecord modelRecord) {
         if (modelRecord.image() != null) {
-            return Config.UPLOADS + "/" + modelRecord.image().getOriginalFilename();
+            return cloudinaryService.upload(modelRecord.image());
         }
 
         Model model = getById(modelRecord.id());

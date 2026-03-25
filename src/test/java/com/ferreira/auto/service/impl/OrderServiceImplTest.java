@@ -19,7 +19,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
 import java.util.List;
 import java.util.Optional;
@@ -50,30 +49,10 @@ class OrderServiceImplTest {
     private StockService stockService;
 
     @Mock
-    private RabbitTemplate rabbitTemplate;
-
-    @Mock
     private SendMailPublisher sendMail;
 
     @InjectMocks
     private OrderServiceImpl service;
-
-    @Test
-    void sendRabbitReturnsOrderWhenResponseIsOrder() {
-        OrderDto dto = new OrderDto();
-        Order order = new Order();
-        when(rabbitTemplate.convertSendAndReceive(anyString(), anyString(), eq(dto))).thenReturn(order);
-
-        assertSame(order, service.sendRabbit(dto));
-    }
-
-    @Test
-    void sendRabbitThrowsWhenResponseInvalid() {
-        OrderDto dto = new OrderDto();
-        when(rabbitTemplate.convertSendAndReceive(anyString(), anyString(), eq(dto))).thenReturn("invalid");
-
-        assertThrows(RuntimeException.class, () -> service.sendRabbit(dto));
-    }
 
     @Test
     void saveCreatesOrderItemsUpdatesPriceAndChangesStatus() {

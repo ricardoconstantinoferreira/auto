@@ -6,9 +6,7 @@ import com.ferreira.auto.entity.Model;
 import com.ferreira.auto.entity.lib.ModelInterface;
 import com.ferreira.auto.exception.ModelAlreadyExistsException;
 import com.ferreira.auto.infra.configuration.MessageInternationalization;
-import com.ferreira.auto.infra.upload.Config;
 import com.ferreira.auto.service.ModelService;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -19,8 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -40,12 +36,6 @@ class ModelControllerTest {
     @InjectMocks
     private ModelController controller;
 
-    @AfterEach
-    void cleanupUploads() throws IOException {
-        Path file = Path.of(Config.UPLOADS, "test-model.png");
-        Files.deleteIfExists(file);
-    }
-
     @Test
     void saveThrowsWhenDuplicateOnNewRecord() {
         MockMultipartFile file = new MockMultipartFile("image", "test-model.png", "image/png", "x".getBytes());
@@ -58,7 +48,7 @@ class ModelControllerTest {
     }
 
     @Test
-    void saveReturnsCreatedAndCopiesFile() throws IOException {
+    void saveReturnsCreatedAndCallsService() throws IOException {
         MockMultipartFile file = new MockMultipartFile("image", "test-model.png", "image/png", "abc".getBytes());
         ModelRecord record = new ModelRecord(null, "Model X", 1L, 1L, 2024, true, file, 10f, 10);
         Model model = new Model();
@@ -70,7 +60,7 @@ class ModelControllerTest {
         ResponseEntity<ModelResponseDto> response = controller.save(record);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertTrue(Files.exists(Path.of(Config.UPLOADS, "test-model.png")));
+        verify(modelService).save(record);
     }
 
     @Test

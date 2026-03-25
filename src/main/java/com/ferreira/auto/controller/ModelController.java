@@ -6,26 +6,18 @@ import com.ferreira.auto.entity.Model;
 import com.ferreira.auto.entity.lib.ModelInterface;
 import com.ferreira.auto.exception.ModelAlreadyExistsException;
 import com.ferreira.auto.infra.configuration.MessageInternationalization;
-import com.ferreira.auto.infra.upload.Config;
 import com.ferreira.auto.service.ModelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "api/auto/model")
 public class ModelController {
-
-    private final Path root = Paths.get(Config.UPLOADS);
 
     @Autowired
     private ModelService modelService;
@@ -34,7 +26,7 @@ public class ModelController {
     private MessageInternationalization messageInternationalization;
 
     @PostMapping(consumes = "multipart/form-data")
-    public ResponseEntity<ModelResponseDto> save(@ModelAttribute ModelRecord modelRecord) throws IOException {
+    public ResponseEntity<ModelResponseDto> save(@ModelAttribute ModelRecord modelRecord) {
 
         if (modelRecord.id() == null) {
             if (modelService.hasModel(modelRecord.description())) {
@@ -45,15 +37,7 @@ public class ModelController {
             }
         }
 
-        if (!Files.exists(root)) Files.createDirectory(root);
-
         Model entity = modelService.save(modelRecord);
-
-        if (entity != null && modelRecord.image() != null) {
-            Files.copy(modelRecord.image().getInputStream(),
-                    this.root.resolve(modelRecord.image().getOriginalFilename()),
-                    StandardCopyOption.REPLACE_EXISTING);
-        }
 
         Optional<Model> optionalModel = Optional.ofNullable(entity);
         ModelResponseDto modelResponseDto = new ModelResponseDto(
