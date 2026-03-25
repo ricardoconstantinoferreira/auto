@@ -51,7 +51,7 @@ class OrderControllerTest {
         stockDetails.put("without_qty", List.of());
 
         when(orderService.validateItemsQtdeOrders(anyList())).thenReturn(stockDetails);
-        when(orderService.sendRabbit(dto)).thenReturn(order);
+        when(orderService.save(dto)).thenReturn(order);
         when(messageInternationalization.getMessage("order.add.done")).thenReturn("done");
         when(messageInternationalization.getMessage("subject.order.message")).thenReturn("subject");
 
