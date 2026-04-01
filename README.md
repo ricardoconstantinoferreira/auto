@@ -13,7 +13,7 @@
     <img alt="PostgreSQL" src="https://img.shields.io/badge/PostgreSQL-%234169e1?logo=postgresql&logoColor=white" />
   </a>
   <a href="https://ollama.ai/">
-    <img alt="Ollama" src="https://img.shields.io/badge/Ollama-000000?style=flat&logo=data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E" />
+    <img src="https://jsdelivr.net" width="54" height="25" alt="Ollama logo" />
   </a>
   <a href="#">
     <img alt="AI" src="https://img.shields.io/badge/AI-enabled-orange?logo=ai&logoColor=white" />
