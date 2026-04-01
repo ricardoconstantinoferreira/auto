@@ -12,9 +12,6 @@
   <a href="https://www.postgresql.org/">
     <img alt="PostgreSQL" src="https://img.shields.io/badge/PostgreSQL-%234169e1?logo=postgresql&logoColor=white" />
   </a>
-  <a href="https://ollama.ai/">
-    <img src="https://jsdelivr.net" width="54" height="25" alt="Ollama logo" />
-  </a>
   <a href="#">
     <img alt="AI" src="https://img.shields.io/badge/AI-enabled-orange?logo=ai&logoColor=white" />
   </a>
