@@ -25,6 +25,7 @@ public class SecurityConfiguration {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auto/customer").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/api/auto/customer/reset-password/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auto/auth/login").permitAll()
