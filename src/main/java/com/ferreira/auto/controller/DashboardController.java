@@ -27,20 +27,23 @@ public class DashboardController {
     public ResponseEntity<List<ModelGraphicInterface[]>> findQtdeModelByPeriod(@PathVariable(value = "month") String month,
                                                                                @PathVariable(value = "year") String year) {
         List<ModelGraphicInterface[]> model = dashboardService.findQtdeModelByPeriod(month, year);
-        return ResponseEntity.status(HttpStatus.CREATED).body(model);
+        return ResponseEntity.status(HttpStatus.OK).body(model);
     }
 
     @GetMapping("/order-value-total/{month}/{year}")
     public ResponseEntity<BigDecimal> findValueTotalByPeriod(@PathVariable(value = "month") String month,
                                                         @PathVariable(value = "year") String year) {
         BigDecimal valueTotal = dashboardService.findValueTotalByPeriod(month, year);
-        return ResponseEntity.status(HttpStatus.CREATED).body(valueTotal.setScale(2, RoundingMode.HALF_UP));
+        BigDecimal scaledValueTotal = (valueTotal != null ? valueTotal : BigDecimal.ZERO)
+                .setScale(2, RoundingMode.HALF_UP);
+
+        return ResponseEntity.status(HttpStatus.OK).body(scaledValueTotal);
     }
 
     @GetMapping("/customer-by-period/{month}/{year}")
     public ResponseEntity<List<CustomerGraphicInterface[]>> findQtdeCustomerByPeriod(@PathVariable(value = "month") String month,
                                                                                @PathVariable(value = "year") String year) {
         List<CustomerGraphicInterface[]> customer = dashboardService.findQtdeCustomerByPeriod(month, year);
-        return ResponseEntity.status(HttpStatus.CREATED).body(customer);
+        return ResponseEntity.status(HttpStatus.OK).body(customer);
     }
 }

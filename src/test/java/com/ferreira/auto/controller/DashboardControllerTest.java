@@ -42,7 +42,7 @@ class DashboardControllerTest {
 
         ResponseEntity<List<ModelGraphicInterface[]>> response = controller.findQtdeModelByPeriod("1", "2024");
 
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(1, response.getBody().size());
         assertEquals("M1", response.getBody().get(0)[0].getDescription());
     }
@@ -53,7 +53,7 @@ class DashboardControllerTest {
 
         ResponseEntity<BigDecimal> response = controller.findValueTotalByPeriod("4", "2023");
 
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(new BigDecimal("100.46"), response.getBody());
     }
 
@@ -72,7 +72,7 @@ class DashboardControllerTest {
 
         ResponseEntity<List<CustomerGraphicInterface[]>> response = controller.findQtdeCustomerByPeriod("6", "2022");
 
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(1, response.getBody().size());
         assertEquals("C1", response.getBody().get(0)[0].getName());
     }

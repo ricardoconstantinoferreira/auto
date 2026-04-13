@@ -39,7 +39,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     @Query(value = "select SUM(total_price + COALESCE(interest_value_payment, 0)) as total_value from orders " +
             "WHERE EXTRACT(MONTH FROM date_order) = CAST(:month AS INTEGER) " +
-            "AND EXTRACT(YEAR FROM date_order) = CAST(:year AS INTEGER) and status_order = 1",
+            "AND EXTRACT(YEAR FROM date_order) = CAST(:year AS INTEGER) and status_order = :#{#status.ordinal()}",
     nativeQuery = true)
     BigDecimal findValueTotalByPeriod(@Param("month") String month, @Param("year") String year);
 
