@@ -1,6 +1,5 @@
 package com.ferreira.auto.shell;
 
-import com.ferreira.auto.dto.CustomerDto;
 import com.ferreira.auto.entity.Customer;
 import com.ferreira.auto.entity.CustomerType;
 import com.ferreira.auto.infra.configuration.MessageInternationalization;
