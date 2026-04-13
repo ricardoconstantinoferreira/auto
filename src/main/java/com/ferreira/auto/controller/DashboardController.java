@@ -24,9 +24,9 @@ public class DashboardController {
     private DashboardService dashboardService;
 
     @GetMapping("/model-by-period/{month}/{year}")
-    public ResponseEntity<List<ModelGraphicInterface[]>> findQtdeModelByPeriod(@PathVariable(value = "month") String month,
+    public ResponseEntity<List<ModelGraphicInterface>> findQtdeModelByPeriod(@PathVariable(value = "month") String month,
                                                                                @PathVariable(value = "year") String year) {
-        List<ModelGraphicInterface[]> model = dashboardService.findQtdeModelByPeriod(month, year);
+        List<ModelGraphicInterface> model = dashboardService.findQtdeModelByPeriod(month, year);
         return ResponseEntity.status(HttpStatus.OK).body(model);
     }
 
@@ -41,9 +41,9 @@ public class DashboardController {
     }
 
     @GetMapping("/customer-by-period/{month}/{year}")
-    public ResponseEntity<List<CustomerGraphicInterface[]>> findQtdeCustomerByPeriod(@PathVariable(value = "month") String month,
+    public ResponseEntity<List<CustomerGraphicInterface>> findQtdeCustomerByPeriod(@PathVariable(value = "month") String month,
                                                                                @PathVariable(value = "year") String year) {
-        List<CustomerGraphicInterface[]> customer = dashboardService.findQtdeCustomerByPeriod(month, year);
+        List<CustomerGraphicInterface> customer = dashboardService.findQtdeCustomerByPeriod(month, year);
         return ResponseEntity.status(HttpStatus.OK).body(customer);
     }
 }

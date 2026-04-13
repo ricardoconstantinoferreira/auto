@@ -10,7 +10,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
@@ -34,13 +35,17 @@ class DashboardServiceImplTest {
             public Long getQtde() { return 5L; }
         };
 
-        when(orderRepository.findQtdeModelByPeriod("1", "2023")).thenReturn(Collections.singletonList(new ModelGraphicInterface[]{iface}));
+        List<ModelGraphicInterface> modelInterface = new ArrayList<>();
+        modelInterface.add(iface);
+
+        when(orderRepository.findQtdeModelByPeriod("1", "2023"))
+                .thenReturn(modelInterface);
 
         var result = service.findQtdeModelByPeriod("1", "2023");
 
         assertEquals(1, result.size());
-        assertEquals("Model A", result.get(0)[0].getDescription());
-        assertEquals(5L, result.get(0)[0].getQtde());
+        assertEquals("Model A", result.get(0).getDescription());
+        assertEquals(5L, result.get(0).getQtde());
     }
 
     @Test
@@ -62,12 +67,16 @@ class DashboardServiceImplTest {
             public Long getQtde() { return 2L; }
         };
 
-        when(orderRepository.findQtdeCustomerByPeriod("3", "2025")).thenReturn(Collections.singletonList(new CustomerGraphicInterface[]{ci}));
+        List<CustomerGraphicInterface> customerInterface = new ArrayList<>();
+        customerInterface.add(ci);
+
+        when(orderRepository.findQtdeCustomerByPeriod("3", "2025"))
+                .thenReturn(customerInterface);
 
         var result = service.findQtdeCustomerByPeriod("3", "2025");
 
         assertEquals(1, result.size());
-        assertEquals("John", result.get(0)[0].getName());
-        assertEquals(2L, result.get(0)[0].getQtde());
+        assertEquals("John", result.get(0).getName());
+        assertEquals(2L, result.get(0).getQtde());
     }
 }
