@@ -17,7 +17,7 @@ public class DashboardServiceImpl implements DashboardService {
     private OrderRepository orderRepository;
 
     @Override
-    public List<ModelGraphicInterface[]> findQtdeModelByPeriod(String month, String year) {
+    public List<ModelGraphicInterface> findQtdeModelByPeriod(String month, String year) {
         return orderRepository.findQtdeModelByPeriod(month, year);
     }
 
@@ -27,7 +27,7 @@ public class DashboardServiceImpl implements DashboardService {
     }
 
     @Override
-    public List<CustomerGraphicInterface[]> findQtdeCustomerByPeriod(String month, String year) {
+    public List<CustomerGraphicInterface> findQtdeCustomerByPeriod(String month, String year) {
         return orderRepository.findQtdeCustomerByPeriod(month, year);
     }
 }

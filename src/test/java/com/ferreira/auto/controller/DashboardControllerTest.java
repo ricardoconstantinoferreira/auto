@@ -12,7 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.math.BigDecimal;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -37,14 +37,17 @@ class DashboardControllerTest {
             public Long getQtde() { return 7L; }
         };
 
-        when(dashboardService.findQtdeModelByPeriod("1", "2024"))
-                .thenReturn(Collections.singletonList(new ModelGraphicInterface[]{iface}));
+        List<ModelGraphicInterface> modelInterface = new ArrayList<>();
+        modelInterface.add(iface);
 
-        ResponseEntity<List<ModelGraphicInterface[]>> response = controller.findQtdeModelByPeriod("1", "2024");
+        when(dashboardService.findQtdeModelByPeriod("1", "2024"))
+                .thenReturn(modelInterface);
+
+        ResponseEntity<List<ModelGraphicInterface>> response = controller.findQtdeModelByPeriod("1", "2024");
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(1, response.getBody().size());
-        assertEquals("M1", response.getBody().get(0)[0].getDescription());
+        assertEquals("M1", response.getBody().get(0).getDescription());
     }
 
     @Test
@@ -67,13 +70,16 @@ class DashboardControllerTest {
             public Long getQtde() { return 3L; }
         };
 
-        when(dashboardService.findQtdeCustomerByPeriod("6", "2022"))
-                .thenReturn(Collections.singletonList(new CustomerGraphicInterface[]{ci}));
+        List<CustomerGraphicInterface> customerInterface = new ArrayList<>();
+        customerInterface.add(ci);
 
-        ResponseEntity<List<CustomerGraphicInterface[]>> response = controller.findQtdeCustomerByPeriod("6", "2022");
+        when(dashboardService.findQtdeCustomerByPeriod("6", "2022"))
+            .thenReturn(customerInterface);
+
+        ResponseEntity<List<CustomerGraphicInterface>> response = controller.findQtdeCustomerByPeriod("6", "2022");
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(1, response.getBody().size());
-        assertEquals("C1", response.getBody().get(0)[0].getName());
+        assertEquals("C1", response.getBody().get(0).getName());
     }
 }

@@ -35,7 +35,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             "AND EXTRACT(YEAR FROM o.date_order) = CAST(:year AS INTEGER) " +
             "GROUP BY m.description",
     nativeQuery = true)
-    List<ModelGraphicInterface[]> findQtdeModelByPeriod(@Param("month") String month, @Param("year") String year);
+    List<ModelGraphicInterface> findQtdeModelByPeriod(@Param("month") String month, @Param("year") String year);
 
     @Query(value = "select SUM(total_price + COALESCE(interest_value_payment, 0)) as total_value from orders " +
             "WHERE EXTRACT(MONTH FROM date_order) = CAST(:month AS INTEGER) " +
@@ -51,5 +51,5 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             "AND EXTRACT(YEAR FROM o.date_order) = CAST(:year AS INTEGER) " +
             "GROUP BY c.name",
             nativeQuery = true)
-    List<CustomerGraphicInterface[]> findQtdeCustomerByPeriod(@Param("month") String month, @Param("year") String year);
+    List<CustomerGraphicInterface> findQtdeCustomerByPeriod(@Param("month") String month, @Param("year") String year);
 }
