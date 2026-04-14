@@ -2,6 +2,7 @@ package com.ferreira.auto.service.impl;
 
 import com.ferreira.auto.entity.lib.CustomerGraphicInterface;
 import com.ferreira.auto.entity.lib.ModelGraphicInterface;
+import com.ferreira.auto.entity.lib.ValueTotalInterface;
 import com.ferreira.auto.repository.OrderRepository;
 import com.ferreira.auto.service.DashboardService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class DashboardServiceImpl implements DashboardService {
     }
 
     @Override
-    public BigDecimal findValueTotalByPeriod(String month, String year) {
+    public ValueTotalInterface findValueTotalByPeriod(String month, String year) {
         return orderRepository.findValueTotalByPeriod(month, year);
     }
 

@@ -2,6 +2,7 @@ package com.ferreira.auto.service.impl;
 
 import com.ferreira.auto.entity.lib.CustomerGraphicInterface;
 import com.ferreira.auto.entity.lib.ModelGraphicInterface;
+import com.ferreira.auto.entity.lib.ValueTotalInterface;
 import com.ferreira.auto.repository.OrderRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,7 +10,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,11 +50,19 @@ class DashboardServiceImplTest {
 
     @Test
     void findValueTotalByPeriodDelegatesToRepository() {
-        when(orderRepository.findValueTotalByPeriod("2", "2024")).thenReturn(new BigDecimal("123.45"));
 
-        BigDecimal result = service.findValueTotalByPeriod("2", "2024");
+        ValueTotalInterface valueTotalInterface = new ValueTotalInterface() {
+            @Override
+            public Float getTotalValue() {
+                return 123.45f;
+            }
+        };
 
-        assertEquals(new BigDecimal("123.45"), result);
+        when(orderRepository.findValueTotalByPeriod("2", "2024")).thenReturn(valueTotalInterface);
+
+        ValueTotalInterface result = service.findValueTotalByPeriod("2", "2024");
+
+        assertEquals(123.45f, result.getTotalValue());
     }
 
     @Test
