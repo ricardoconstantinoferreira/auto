@@ -5,12 +5,12 @@ import com.ferreira.auto.entity.StatusOrder;
 import com.ferreira.auto.entity.lib.CustomerGraphicInterface;
 import com.ferreira.auto.entity.lib.ModelGraphicInterface;
 import com.ferreira.auto.entity.lib.OrderInterface;
+import com.ferreira.auto.entity.lib.ValueTotalInterface;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,9 +39,9 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     @Query(value = "select SUM(total_price + COALESCE(interest_value_payment, 0)) as total_value from orders " +
             "WHERE EXTRACT(MONTH FROM date_order) = CAST(:month AS INTEGER) " +
-            "AND EXTRACT(YEAR FROM date_order) = CAST(:year AS INTEGER) and status_order = :#{#status.ordinal()}",
+            "AND EXTRACT(YEAR FROM date_order) = CAST(:year AS INTEGER) and status_order = 1",
     nativeQuery = true)
-    BigDecimal findValueTotalByPeriod(@Param("month") String month, @Param("year") String year);
+    ValueTotalInterface findValueTotalByPeriod(@Param("month") String month, @Param("year") String year);
 
     @Query(value = "SELECT c.name, count(oi.customer_id) as qtde " +
             "FROM customer c " +

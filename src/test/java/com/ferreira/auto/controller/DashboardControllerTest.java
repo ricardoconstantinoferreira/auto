@@ -2,6 +2,7 @@ package com.ferreira.auto.controller;
 
 import com.ferreira.auto.entity.lib.CustomerGraphicInterface;
 import com.ferreira.auto.entity.lib.ModelGraphicInterface;
+import com.ferreira.auto.entity.lib.ValueTotalInterface;
 import com.ferreira.auto.service.DashboardService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -52,7 +53,14 @@ class DashboardControllerTest {
 
     @Test
     void findValueTotalByPeriodReturnsCreatedWithScaledValue() {
-        when(dashboardService.findValueTotalByPeriod("4", "2023")).thenReturn(new BigDecimal("100.456"));
+        ValueTotalInterface valueTotalInterface = new ValueTotalInterface() {
+            @Override
+            public Float getTotalValue() {
+                return 100.46f;
+            }
+        };
+
+        when(dashboardService.findValueTotalByPeriod("4", "2023")).thenReturn(valueTotalInterface);
 
         ResponseEntity<BigDecimal> response = controller.findValueTotalByPeriod("4", "2023");
 
