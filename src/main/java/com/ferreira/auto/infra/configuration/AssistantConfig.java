@@ -1,6 +1,8 @@
 package com.ferreira.auto.infra.configuration;
 
 import com.ferreira.auto.service.AssistantAiService;
+import com.ferreira.auto.service.AssistantRentAiService;
+import com.ferreira.auto.tools.AssistantRentTools;
 import com.ferreira.auto.tools.AssistantTools;
 import dev.langchain4j.model.ollama.OllamaChatModel;
 import dev.langchain4j.service.AiServices;
@@ -32,4 +34,13 @@ public class AssistantConfig {
                 .tools(assistantTools)
                 .build();
     }
+
+    @Bean("assistantRent")
+    public AssistantRentAiService assistantRent(OllamaChatModel model, AssistantRentTools assistantRentTools) {
+        return AiServices.builder(AssistantRentAiService.class)
+                .chatLanguageModel(model)
+                .tools(assistantRentTools)
+                .build();
+    }
+
 }
