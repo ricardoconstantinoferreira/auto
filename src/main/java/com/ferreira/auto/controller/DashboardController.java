@@ -4,6 +4,7 @@ import com.ferreira.auto.entity.lib.CustomerGraphicInterface;
 import com.ferreira.auto.entity.lib.ModelGraphicInterface;
 import com.ferreira.auto.entity.lib.ValueTotalInterface;
 import com.ferreira.auto.service.DashboardService;
+import com.ferreira.auto.service.ExpensesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,6 +25,9 @@ public class DashboardController {
     @Autowired
     private DashboardService dashboardService;
 
+    @Autowired
+    private ExpensesService expensesService;
+
     @GetMapping("/model-by-period/{month}/{year}")
     public ResponseEntity<List<ModelGraphicInterface>> findQtdeModelByPeriod(@PathVariable(value = "month") String month,
                                                                                @PathVariable(value = "year") String year) {
@@ -34,14 +38,8 @@ public class DashboardController {
     @GetMapping("/order-value-total/{month}/{year}")
     public ResponseEntity<BigDecimal> findValueTotalByPeriod(@PathVariable(value = "month") String month,
                                                         @PathVariable(value = "year") String year) {
-        BigDecimal resultValue = BigDecimal.valueOf(0.0);
-        ValueTotalInterface valueTotal = dashboardService.findValueTotalByPeriod(month, year);
 
-        if (valueTotal != null) {
-            BigDecimal value = new BigDecimal(valueTotal.getTotalValue().toString());
-            resultValue = value.setScale(2, RoundingMode.HALF_UP);
-        }
-
+        BigDecimal resultValue = dashboardService.findValueTotalByPeriod(month, year);
         return ResponseEntity.status(HttpStatus.OK).body(resultValue);
     }
 

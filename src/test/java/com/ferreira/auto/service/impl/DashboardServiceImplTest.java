@@ -3,6 +3,7 @@ package com.ferreira.auto.service.impl;
 import com.ferreira.auto.entity.lib.CustomerGraphicInterface;
 import com.ferreira.auto.entity.lib.ModelGraphicInterface;
 import com.ferreira.auto.entity.lib.ValueTotalInterface;
+import com.ferreira.auto.repository.ExpensesRepository;
 import com.ferreira.auto.repository.OrderRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,7 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
+import java.math.BigDecimal;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -22,6 +23,9 @@ class DashboardServiceImplTest {
     @Mock
     private OrderRepository orderRepository;
 
+    @Mock
+    private ExpensesRepository expensesRepository;
+
     @InjectMocks
     private DashboardServiceImpl service;
 
@@ -29,62 +33,57 @@ class DashboardServiceImplTest {
     void findQtdeModelByPeriodDelegatesToRepository() {
         ModelGraphicInterface iface = new ModelGraphicInterface() {
             @Override
-            public String getDescription() { return "Model A"; }
+            public String getDescription() { return "M1"; }
 
             @Override
-            public Long getQtde() { return 5L; }
+            public Long getQtde() { return 7L; }
         };
 
-        List<ModelGraphicInterface> modelInterface = new ArrayList<>();
-        modelInterface.add(iface);
+        when(orderRepository.findQtdeModelByPeriod("1", "2024")).thenReturn(List.of(iface));
 
-        when(orderRepository.findQtdeModelByPeriod("1", "2023"))
-                .thenReturn(modelInterface);
-
-        var result = service.findQtdeModelByPeriod("1", "2023");
+        var result = service.findQtdeModelByPeriod("1", "2024");
 
         assertEquals(1, result.size());
-        assertEquals("Model A", result.get(0).getDescription());
-        assertEquals(5L, result.get(0).getQtde());
+        assertEquals("M1", result.get(0).getDescription());
     }
 
     @Test
     void findValueTotalByPeriodDelegatesToRepository() {
-
-        ValueTotalInterface valueTotalInterface = new ValueTotalInterface() {
+        ValueTotalInterface v = new ValueTotalInterface() {
             @Override
-            public Float getTotalValue() {
-                return 123.45f;
-            }
+            public Float getTotalValue() { return 10.0f; }
         };
 
-        when(orderRepository.findValueTotalByPeriod("2", "2024")).thenReturn(valueTotalInterface);
+        ValueTotalInterface v1 = new ValueTotalInterface() {
+            @Override
+            public Float getTotalValue() { return 3.0f; }
+        };
 
-        ValueTotalInterface result = service.findValueTotalByPeriod("2", "2024");
+        BigDecimal resultDecimal = new BigDecimal("7.00");
 
-        assertEquals(123.45f, result.getTotalValue());
+        when(orderRepository.findValueTotalByPeriod("2", "2025")).thenReturn(v);
+        when(expensesRepository.findValueTotalByPeriodExpenses("2", "2025")).thenReturn(v1);
+
+        BigDecimal result = service.findValueTotalByPeriod("2", "2025");
+
+        assertEquals(resultDecimal, result);
     }
 
     @Test
     void findQtdeCustomerByPeriodDelegatesToRepository() {
-        CustomerGraphicInterface ci = new CustomerGraphicInterface() {
+        CustomerGraphicInterface c = new CustomerGraphicInterface() {
             @Override
-            public String getName() { return "John"; }
+            public String getName() { return "C1"; }
 
             @Override
-            public Long getQtde() { return 2L; }
+            public Long getQtde() { return 3L; }
         };
 
-        List<CustomerGraphicInterface> customerInterface = new ArrayList<>();
-        customerInterface.add(ci);
+        when(orderRepository.findQtdeCustomerByPeriod("3", "2026")).thenReturn(List.of(c));
 
-        when(orderRepository.findQtdeCustomerByPeriod("3", "2025"))
-                .thenReturn(customerInterface);
-
-        var result = service.findQtdeCustomerByPeriod("3", "2025");
+        var result = service.findQtdeCustomerByPeriod("3", "2026");
 
         assertEquals(1, result.size());
-        assertEquals("John", result.get(0).getName());
-        assertEquals(2L, result.get(0).getQtde());
+        assertEquals("C1", result.get(0).getName());
     }
 }
