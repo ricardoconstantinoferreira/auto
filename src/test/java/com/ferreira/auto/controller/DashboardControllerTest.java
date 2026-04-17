@@ -2,7 +2,6 @@ package com.ferreira.auto.controller;
 
 import com.ferreira.auto.entity.lib.CustomerGraphicInterface;
 import com.ferreira.auto.entity.lib.ModelGraphicInterface;
-import com.ferreira.auto.entity.lib.ValueTotalInterface;
 import com.ferreira.auto.service.DashboardService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -53,14 +53,9 @@ class DashboardControllerTest {
 
     @Test
     void findValueTotalByPeriodReturnsCreatedWithScaledValue() {
-        ValueTotalInterface valueTotalInterface = new ValueTotalInterface() {
-            @Override
-            public Float getTotalValue() {
-                return 100.46f;
-            }
-        };
+        BigDecimal decimal = new BigDecimal("100.46");
 
-        when(dashboardService.findValueTotalByPeriod("4", "2023")).thenReturn(valueTotalInterface);
+        doReturn(decimal).when(dashboardService).findValueTotalByPeriod("4", "2023");
 
         ResponseEntity<BigDecimal> response = controller.findValueTotalByPeriod("4", "2023");
 
