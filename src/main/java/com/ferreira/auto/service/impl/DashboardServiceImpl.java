@@ -29,11 +29,19 @@ public class DashboardServiceImpl implements DashboardService {
 
     @Override
     public BigDecimal findValueTotalByPeriod(String month, String year) {
+        Float value = Float.valueOf(0);
+        Float expenses = Float.valueOf(0);
         ValueTotalInterface valueTotal = orderRepository.findValueTotalByPeriod(month, year);
         ValueTotalInterface valueExpenses = expensesRepository.findValueTotalByPeriodExpenses(month, year);
 
-        Float value = (!valueTotal.getTotalValue().toString().isEmpty()) ? valueTotal.getTotalValue() : 0;
-        Float expenses = (!valueExpenses.getTotalValue().toString().isEmpty()) ? valueExpenses.getTotalValue() : 0;
+        if (valueTotal != null) {
+            value = (!valueTotal.getTotalValue().toString().isEmpty()) ? valueTotal.getTotalValue() : 0;
+        }
+
+        if (valueExpenses != null) {
+            expenses = (!valueExpenses.getTotalValue().toString().isEmpty()) ? valueExpenses.getTotalValue() : 0;
+        }
+
         Float result = value - expenses;
 
         BigDecimal valueResult = new BigDecimal(result.toString());
